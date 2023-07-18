@@ -1,0 +1,88 @@
+/*================== LOGIN ========================*/
+.connect {
+	& .bg {
+		z-index: -1;
+		pointer-events: none;
+		display: none;
+	}
+	& .object {
+		position: absolute;
+		width: 95%;
+		height: 95%;
+		top: 0;
+		left: 0;
+		object-fit: contain;
+		opacity: 1;
+	}
+
+	& .login-wrapper {
+		background-color: var(--bg-secondary);
+	}
+
+	/*================== Audio ========================*/
+
+	& h6 .aud-btn {
+		width: 30px;
+		height: 30px;
+		background-color: transparent;
+		cursor: pointer;
+		border: none;
+	}
+
+	& h6 .fa-circle-play {
+		color: var(--blue-color);
+	}
+	/*================== Audio ========================*/
+
+	/*================== MEDIA QUERIES ========================*/
+
+	@media (min-width: 850px) {
+		& .bg {
+			display: block;
+		}
+		& .login-wrap {
+			display: flex;
+			align-items: center;
+			max-width: 1400px;
+			/*margin: 0 100px;*/
+			padding: 0 1rem;
+		}
+
+		& .login-1 {
+			display: flex;
+			flex-direction: column;
+			width: 50%;
+			margin-bottom: 15vh;
+			line-height: normal;
+		}
+
+		& .login-1 img {
+			width: 300px;
+			margin-left: -1.7rem;
+		}
+
+		& .login-1 span {
+			font-size: 18px;
+		}
+
+		& .login-2-wrap {
+			width: 400px;
+		}
+
+		& .login-input-wrap {
+			width: 360px;
+		}
+	}
+
+	/*================== MEDIA QUERIES ========================*/
+	/*================== LOGIN ========================*/
+}
+
+/*================== ERROR SUCCESS ========================*/
+.error-text {
+	color: var(--red-color);
+}
+.success-text {
+	color: var(--green-color);
+}
+/*================== ERROR SUCCESS ========================*/

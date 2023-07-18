@@ -1,0 +1,106 @@
+.notification {
+	position: absolute;
+	left: 200px;
+
+	& .notifications {
+		cursor: pointer;
+	}
+
+	& .notification-count {
+		background: var(--red-color);
+		color: white;
+		font-size: 0.7rem;
+		width: fit-content;
+		border-radius: 0.8rem;
+		padding: 0.1rem 0.4rem;
+		position: absolute;
+		top: 0.5rem;
+		left: 25px;
+		z-index: 999;
+	}
+	& .notifications {
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: grid;
+		place-items: center;
+		z-index: 99;
+	}
+	& .uil {
+		width: 40px;
+	}
+	& .pulse {
+		background-color: rgb(255, 162, 162);
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		margin: auto;
+		top: 5px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		animation: pulse 2s infinite;
+		z-index: -99999;
+	}
+
+	@keyframes pulse {
+		0% {
+			background-color: rgb(255, 0, 0);
+			transform: scale(0);
+			opacity: 0;
+		}
+		50% {
+			background-color: rgb(255, 68, 68);
+		}
+		100% {
+			background-color: rgb(255, 151, 151);
+
+			transform: scale(1);
+			opacity: 100%;
+		}
+	}
+
+	& img {
+		width: 30px;
+	}
+	& .notifications-popup {
+		position: absolute;
+		width: 30rem;
+		background: var(--bg-primary);
+		border-radius: 10px;
+		border-top: 1px solid white;
+		padding: 1rem;
+		box-shadow: 0 0 1rem var(--color-primary);
+		top: 40px;
+		z-index: 100;
+	}
+	& .notifications-popup::before {
+		content: "";
+		width: 1.2rem;
+		height: 1.2rem;
+		display: block;
+		background: var(--bg-primary);
+		position: absolute;
+		top: -0.6rem;
+		left: 1rem;
+		transform: rotate(45deg);
+		z-index: -1;
+	}
+	& .notifications-popup > div {
+		display: flex;
+		align-items: start;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+	& .notifications-popup small {
+		display: block;
+	}
+}

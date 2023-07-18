@@ -1,0 +1,53 @@
+.select-bg {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: var(--bg-primary);
+	box-shadow: 0 0 90px 10px var(--shadow-1);
+	border-radius: 10px;
+	padding: 15px;
+	padding-bottom: 1rem;
+	width: 750px;
+	height: fit-content;
+	color: var(--color-primary);
+	max-height: 90vh;
+	overflow-y: auto;
+
+	& .select-bg-header {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid var(--bg-third);
+	}
+	& .select-bg-header i {
+		position: absolute;
+		right: 0;
+		cursor: pointer;
+	}
+	& .select-bg-header span:first-of-type {
+		font-weight: 700;
+		font-size: 30px;
+	}
+	& .select-bg-header span:last-of-type {
+		font-size: 15px;
+		color: var(--color-secondary);
+	}
+}
+
+.image-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(calc(100% / 3), 1fr));
+	grid-gap: 10px;
+}
+
+.image-grid img {
+	max-width: 100%;
+	height: auto;
+}
+
+.image-grid img.selected {
+	border: 2px solid #000;
+}

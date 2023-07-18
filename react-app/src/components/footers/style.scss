@@ -1,0 +1,34 @@
+.login-footer {
+	/*================== FOOTER ========================*/
+
+	height: 5vh;
+	background: var(--bg-primary);
+	padding: 0.5rem;
+
+	& .login-footer-wrap {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 3px 10px;
+		font-size: 15px !important;
+		color: var(--color-secondary);
+		font-size: 12px;
+		justify-content: space-between;
+	}
+
+	& .login-footer-wrap a:hover {
+		color: var(--blue-color);
+	}
+	/*
+.footer-square {
+	background: var(--bg-secondary);
+	height: 19px;
+	width: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--bg-third);
+}
+*/
+
+	/*================== FOOTER ========================*/
+}

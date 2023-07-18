@@ -1,0 +1,16 @@
+.reset {
+	& {
+		background: var(--bg-secondary);
+		height: 100vh;
+		color: var(--color-primary);
+	}
+	@media (min-width: 850px) {
+		& .login-2-wrap {
+			width: 400px;
+		}
+
+		& .login-input-wrap {
+			width: 360px;
+		}
+	}
+}

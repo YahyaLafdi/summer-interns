@@ -1,0 +1,110 @@
+.login-input-wrap {
+	& {
+		position: relative;
+		width: 360px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	& input {
+		outline: none;
+		border: 1px solid var(--bg-third);
+		width: 100%;
+		height: 50px;
+		font-size: 17px;
+		border-radius: 10px;
+		padding-left: 10px;
+		color: var(--color-primary);
+	}
+
+	& input:focus {
+		border-color: var(--blue-color);
+	}
+
+	& .input-error {
+		position: relative;
+		padding: 5px 10px;
+		background: var(--red-color);
+		width: 100%;
+		color: #fff;
+		font-size: 14px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+	}
+
+	& .input-error-border {
+		border-color: var(--red-color) !important;
+	}
+
+	& .fa-circle-exclamation {
+		color: var(--red-color);
+		position: absolute;
+		right: 10px;
+		top: 17px;
+		transform: scale(1.1);
+	}
+
+	& .error-arrow-top {
+		border-top: 10px solid var(--red-color);
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+		position: absolute;
+		bottom: -8px;
+	}
+	& .error-arrow-bottom {
+		border-bottom: 10px solid var(--red-color);
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+		position: absolute;
+		top: -8px;
+	}
+	& .error-arrow-left {
+		border-left: 10px solid var(--red-color);
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		position: absolute;
+		right: -8px;
+		top: 15px;
+	}
+	& .error-arrow-right {
+		border-right: 10px solid var(--red-color);
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		position: absolute;
+		left: -9px;
+		top: 15px;
+	}
+
+	& .input-error-desktop {
+		position: absolute;
+		width: 300px;
+		left: -19.5rem;
+		top: -5px;
+		padding: 15px 10px;
+	}
+
+	& .input-button {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+
+	& .input-button .aud-btn {
+		width: 30px;
+		height: 30px;
+		background-color: transparent;
+		cursor: pointer;
+		border: none;
+	}
+	& .input-button i {
+		color: var(--blue-color);
+	}
+
+	@media (max-width: 850px) {
+		& {
+			width: 300px;
+		}
+	}
+}

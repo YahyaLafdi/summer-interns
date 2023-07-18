@@ -1,0 +1,71 @@
+.header {
+	& {
+		background: var(--bg-primary);
+		box-shadow: 1px 8px 15px -7px var(--shadow-2);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 1rem;
+	}
+
+	& img {
+		width: 160px;
+	}
+
+	& .right-reset {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	& .right-reset img {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 1px solid rgb(178, 178, 178);
+	}
+	& .btn-coop.btn {
+		padding: 0px 12px;
+	}
+	& .btn-coop.btn img {
+		padding: 5px 5px;
+		border: none;
+		box-shadow: 0 0 90px 10px var(--shadow-3);
+	}
+}
+
+.reset-header {
+	& {
+		background: var(--bg-primary);
+		box-shadow: 1px 8px 15px -7px var(--shadow-2);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 1rem;
+	}
+
+	& img {
+		width: 160px;
+	}
+
+	& .right-reset {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	& .right-reset img {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 1px solid rgb(178, 178, 178);
+	}
+	& .btn-coop.btn {
+		padding: 0px 12px;
+	}
+	& .btn-coop.btn img {
+		padding: 5px 5px;
+		border: none;
+		box-shadow: 0 0 90px 10px var(--shadow-3);
+	}
+}

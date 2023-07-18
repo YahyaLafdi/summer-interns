@@ -1,0 +1,339 @@
+.main-container {
+	background: url(https://res.cloudinary.com/dguz89aez/image/upload/v1680457717/Backgrounds/bg1_rj22dh.jpg)
+		center / cover;
+	transition: var(--tran-05);
+	justify-content: center;
+	align-items: center;
+
+	& .container-nav-table {
+		display: flex;
+	}
+}
+
+.achat-container {
+	& .title {
+		font-size: 2rem;
+		color: var(--bg-primary);
+		text-transform: uppercase;
+		text-align: center;
+	}
+	& .product i {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		margin-left: 125px;
+		cursor: pointer;
+	}
+	& .edit-btn {
+		position: absolute;
+		top: 3px;
+		left: 3px;
+		width: 20px;
+		cursor: pointer;
+	}
+
+	& .table-header {
+		width: 100%;
+		height: 60px;
+		background-color: #fff4;
+		padding: 0.8rem 1rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	& .table-header .input-group {
+		width: 35%;
+		height: 100%;
+		background-color: #fff5;
+		padding: 0 0.8rem;
+		border-radius: 2rem;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		transition: 0.2s;
+	}
+	& .table-header .input-group:hover {
+		width: 45%;
+		background-color: #fff8;
+		box-shadow: 0 0.1rem 0.4rem #0002;
+	}
+
+	& .table-header .input-group input {
+		width: 100%;
+		padding: 0 0.5rem 0 0.3rem;
+		background-color: transparent;
+		border: none;
+		outline: none;
+	}
+
+	& .products-container {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(16.5rem, 1fr));
+		gap: 2rem;
+		margin: 1rem 3.5rem;
+	}
+
+	& .products-container .product {
+		position: relative;
+		text-align: center;
+		padding: 3rem 2rem;
+		background: #fff;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+		outline: 0.1rem solid #ccc;
+		outline-offset: -1.5rem;
+		border-radius: 10px;
+	}
+
+	& .products-container .product:hover {
+		outline: 0.2rem solid var(--blue-color);
+		outline-offset: 0;
+	}
+
+	& .sign-splitter {
+		width: 100%;
+		height: 1px;
+		background-color: var(--bg-third);
+		margin: 10px auto;
+	}
+
+	& .products-container .product img.product-img {
+		height: 5rem;
+	}
+
+	& .products-container .product:hover img.product-img {
+		transform: scale(0.9);
+	}
+
+	& .products-container .product h3 {
+		padding: 0.5rem 0;
+		font-size: 0.9rem;
+		color: #444;
+	}
+
+	& .products-container .product:hover h3 {
+		color: var(--blue-color);
+	}
+
+	& .products-container .product .price {
+		font-size: 0.7rem;
+		color: #444;
+	}
+	& .products-container .product .line {
+		display: flex;
+	}
+
+	& .pending {
+		background-color: #ebc474;
+	}
+	& .processed {
+		background-color: #86e49d;
+		color: #006b21;
+	}
+
+	& .status {
+		margin: 0rem 1rem;
+		padding: 0.1rem 0.3rem;
+		border-radius: 5px;
+		text-align: center;
+		font-size: 12px;
+	}
+	& .line-value {
+		padding: 0rem 1rem;
+		text-align: center;
+		font-weight: 500;
+		font-size: 12px;
+		word-wrap: break-word;
+		word-break: break-all;
+	}
+
+	.products-preview {
+		position: fixed;
+		top: 0;
+		left: 0;
+		min-height: 100vh;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.8);
+		display: none;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.products-preview .preview {
+		display: none;
+		padding: 2rem;
+		text-align: center;
+		background: #fff;
+		position: relative;
+		margin: 2rem;
+		width: 40rem;
+	}
+
+	.products-preview .preview.active {
+		display: inline-block;
+	}
+
+	.products-preview .preview img.product-img {
+		height: 30rem;
+	}
+
+	.products-preview .preview .fa-times {
+		position: absolute;
+		top: 1rem;
+		right: 1.5rem;
+		cursor: pointer;
+		color: #444;
+		font-size: 4rem;
+	}
+
+	.products-preview .preview .fa-times:hover {
+		transform: rotate(90deg);
+	}
+
+	.products-preview .preview h3 {
+		color: #444;
+		padding: 0.5rem 0;
+		font-size: 2.5rem;
+	}
+
+	.products-preview .preview .stars {
+		padding: 1rem 0;
+		font-size: 1.7rem;
+	}
+
+	.products-preview .preview .stars i {
+		color: #27ae60;
+	}
+
+	.products-preview .preview .stars span {
+		color: #999;
+	}
+
+	.products-preview .preview p {
+		line-height: 1.5;
+		padding: 1rem 0;
+		font-size: 1.6rem;
+		color: #777;
+	}
+
+	.products-preview .preview .price {
+		padding: 1rem 0;
+		font-size: 2.5rem;
+		color: #27ae60;
+	}
+
+	.products-preview .preview .buttons {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		margin-top: 1rem;
+	}
+
+	.products-preview .preview .buttons a {
+		flex: 1 1 16rem;
+		padding: 1rem;
+		font-size: 1.8rem;
+		color: #444;
+		border: 0.1rem solid #444;
+	}
+
+	.products-preview .preview .buttons a.cart {
+		background: #444;
+		color: #fff;
+	}
+
+	.products-preview .preview .buttons a.cart:hover {
+		background: #111;
+	}
+
+	.products-preview .preview .buttons a.buy:hover {
+		background: #444;
+		color: #fff;
+	}
+
+	& .button {
+		position: relative;
+		padding: 10px 22px;
+		border-radius: 6px;
+		border: none;
+		color: #fff;
+		cursor: pointer;
+		background-color: #7d2ae8;
+		transition: all 0.2s ease;
+	}
+	& .button:active {
+		transform: scale(0.96);
+	}
+	& .button:before,
+	& .button:after {
+		position: absolute;
+		content: "";
+		width: 150%;
+		left: 50%;
+		height: 100%;
+		transform: translateX(-50%);
+		z-index: -1000;
+		background-repeat: no-repeat;
+	}
+	& .button.animate::before {
+		top: -70%;
+		background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+		background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+		animation: greentopBubbles ease-in-out 0.6s forwards infinite;
+	}
+	@keyframes greentopBubbles {
+		0% {
+			background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+		}
+		50% {
+			background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+		}
+		100% {
+			background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+			background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+		}
+	}
+	& .button.animate::after {
+		bottom: -70%;
+		background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+		background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+		animation: greenbottomBubbles ease-in-out 0.6s forwards infinite;
+	}
+	@keyframes greenbottomBubbles {
+		0% {
+			background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+		}
+		50% {
+			background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+		}
+		100% {
+			background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+			background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+		}
+	}
+
+	@media (max-width: 991px) {
+	}
+
+	@media (max-width: 768px) {
+	}
+
+	@media (max-width: 450px) {
+	}
+}
