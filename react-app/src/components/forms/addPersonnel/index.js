@@ -8,6 +8,8 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 
 import { Link } from "react-router-dom";
+import { addPersSchema, addPersSchema2, personalDetails, professionalDetails } from "./utils";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
 export default function AddPersonnel({ visible, activeTab, setLoading, refetch, setRefetch }) {
 	const refInput = useRef(null);
@@ -37,6 +39,30 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		nombreEnfants: "",
 		dateDepart: "",
 	};
+	const initialValues1 = {
+		matricule:"",
+		nom:"",
+		prenom:"",
+		sexe:"",
+		situationFamiliale:"",
+		cin:"",
+		adresse:"",
+		ville:"",
+		ddn:"",
+		telephone:"",
+		nombreEnfants:0
+	}
+	const initialValues2 = {
+		niveauEtudes:"",
+		fonction:"",
+		dateEmbauche:"",
+		basePaiement:"",
+		tauxPaiement:"",
+		isDeclareCnss:"",
+		cnss:"",
+		//adherent:"",
+		renseignements:""
+	}
 
 	const [isDeclaredByCNSS, setIsDeclaredByCNSS] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -129,61 +155,42 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		refInput.current.click();
 	};
 
-	const sexe = [
-		{ key: "Féminine", value: "Féminine" },
-		{ key: "Masculine", value: "Masculine" },
-	];
-	const oui_non = [
-		{ key: "true", value: "Oui" },
-		{ key: "false", value: "Non" },
-	];
-	const situation_familiale = [
-		{ key: "Marié(e)", value: "Marié(e)" },
-		{ key: "Célébataire", value: "Célébataire" },
-		{ key: "Divorcé(e)", value: "Divorcé(e)" },
-		{ key: "Veuf(ve)", value: "Veuf(ve)" },
-	];
-	const niveau_etudes = [
-		{ key: "Sans niveau", value: "Sans niveau" },
-		{ key: "Primaire", value: "Primaire" },
-		{ key: "Secondaire", value: "Secondaire" },
-		{ key: "Lycée", value: "Lycée" },
-		{ key: "Supérieur", value: "Supérieur" },
-	];
-	const Base_de_paiement = [
-		{ key: "Horaire", value: "Horaire" },
-		{ key: "Hebdomadaire", value: "Hebdomadaire" },
-		{ key: "Quinzaine", value: "Quinzaine" },
-		{ key: "mensuelle", value: "mensuelle" },
-	];
-
 	const [formInfos, setFormInfos] = useState(fields);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormInfos({ ...formInfos, [name]: value });
 	};
-
-	const doAdd = async () => {
-		try {
-			setLoading(true);
-			console.log("start upload with this : " + image);
-			const imageUrl = await uploadImage(image);
-			console.log("end upload");
-			const updatedFields = {
-				...formInfos,
-				photoUrl: imageUrl,
-			};
-			console.log(updatedFields);
-			await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s`, updatedFields);
-			setLoading(false);
-			visible(false);
-			setRefetch(!refetch);
-		} catch (error) {
-			setLoading(false);
-			console.log(error);
+	const [ajoutOk, setAjoutOk] = useState(false);
+	useEffect(() => {
+		const doAdd = async () => {
+			try {
+				setLoading(true);
+				console.log("start upload with this : " + image);
+				const imageUrl = await uploadImage(image);
+				console.log("end upload");
+				const updatedFields = {
+					...formInfos,
+					photoUrl: imageUrl,
+				};
+				console.log(updatedFields);
+				await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s`, updatedFields);
+				setLoading(false);
+				visible(false);
+				setRefetch(!refetch);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+			//console.log(formInfos)
+		};
+		if(ajoutOk){
+			console.log(formInfos);
+			doAdd();
+			setAjoutOk(false);
 		}
-	};
+	}, [ajoutOk])
+	
 	const uploadImage = async (img) => {
 		const blob = await fetch(img).then((r) => r.blob());
 		const reader = new FileReader();
@@ -309,205 +316,306 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 	});
 
 	return (
-		<div className="blur">
-			<div className="container">
-				<i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
-				<header>Ajouter un personnel</header>
+    <div className="blur">
+      <div className="container">
+        <i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
+        <header>Ajouter un personnel</header>
 
-				<form action="#">
-					<input
-						type="file"
-						ref={refInput}
-						onChange={handleImage}
-						accept="image/jpeg,image/png,image/webp,image/gif"
-						hidden
-					/>
-					<div className="form first">
-						<div className="details personal">
-							<span className="title">Détails Personnels</span>
-							<div className="profile_img_wrap">
-								<div className="profile_w_left">
-									<div className="profile_w_img">
-										<div
-											className="profile_w_bg"
-											style={{
-												backgroundSize: "cover",
-												backgroundImage: `url(${image})`,
-											}}
-										></div>
-										<div className="profile_circle hover1" onClick={() => uploadComp()}>
-											<img src="./images/icons/camera.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="drag-area">
-								<span className="uploadHeader">Extraire les donneés á partir d'un fichier Excel</span>
-								<span>OU</span>
-								<Link className="uploadBtn">Parcourir</Link>
-								<input hidden type="file" id="fileInput" accept=".xlsx, .xls" onChange={handleFileChange} />
-							</div>
+        <form action="#">
+          <input
+            type="file"
+            ref={refInput}
+            onChange={handleImage}
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+          />
+          <div className="form first">
+            <div className="details personal">
+              <span className="title">Détails Personnels</span>
+              <div className="profile_img_wrap">
+                <div className="profile_w_left">
+                  <div className="profile_w_img">
+                    <div
+                      className="profile_w_bg"
+                      style={{
+                        backgroundSize: "cover",
+                        backgroundImage: `url(${image})`,
+                      }}
+                    ></div>
+                    <div
+                      className="profile_circle hover1"
+                      onClick={() => uploadComp()}
+                    >
+                      <img src="./images/icons/camera.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="drag-area">
+                <span className="uploadHeader">
+                  Extraire les donneés á partir d'un fichier Excel
+                </span>
+                <span>OU</span>
+                <Link className="uploadBtn">Parcourir</Link>
+                <input
+                  hidden
+                  type="file"
+                  id="fileInput"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileChange}
+                />
+              </div>
 
-							<div className="fields">
-								<SimpleInput
-									placeholder="Matricule"
-									type="text"
-									name="matricule"
-									handleChange={handleChange}
-								/>
-								<SimpleInput placeholder="Nom" type="text" name="nom" handleChange={handleChange} />
-								<SimpleInput placeholder="Prénom" type="text" name="prenom" handleChange={handleChange} />
-								<SimpleOptionInput
-									placeholder="Sexe"
-									options={sexe}
-									name="sexe"
-									handleChange={handleChange}
-								/>
-								<SimpleOptionInput
-									placeholder="Situation familiale"
-									options={situation_familiale}
-									name="situationFamiliale"
-									handleChange={handleChange}
-								/>
-								<SimpleInput placeholder="CIN" type="text" name="cin" handleChange={handleChange} />
-								<SimpleInput placeholder="Adresse" type="text" name="adresse" handleChange={handleChange} />
-								<SimpleInput placeholder="Ville" type="text" name="ville" handleChange={handleChange} />
-								<SimpleInput
-									placeholder="Date de naissance"
-									type="date"
-									name="ddn"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Tétéphone"
-									type="tel"
-									name="telephone"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Nombre d'enfants"
-									type="number"
-									name="nombreEnfants"
-									handleChange={handleChange}
-								/>
-							</div>
-						</div>
+              <div>
+                <Formik
+                  initialValues={initialValues1}
+                  validationSchema={addPersSchema}
+                  onSubmit={(values) => {
+                    console.log(values);
+                  }}
+                  //onChange={handleChange}
+                >
+                  {(props) => (
+                    <Form>
+                      <div className="fields">
+                        {personalDetails.map((item) => (
+                          <div className="input-field">
+                            <label>{item.label}</label>
+                            {item.type === "select" ? (
+                              <Field as="select" name={item.name}>
+                                <option value="" disabled selected>
+                                  {item.placeholder}
+                                </option>
+                                {item?.options?.map((op) => (
+                                  <option value={op.key}>{op.value} </option>
+                                ))}
+                              </Field>
+                            ) : (
+                              <>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  name={item.name}
+                                  options={item.options}
+                                  validate={item.validate}
+                                />
+                                <ErrorMessage
+                                  name={item.name}
+                                  className="error"
+                                  component="div"
+                                />
+                              </>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <button
+                        disabled={!props.isValid || !props.touched.matricule}
+                        onClick={() => setFormInfos(x => ({...x, ...props.values}))}
+                        className="nextBtn"
+                        type="button"
+                      >
+                        <span className="btnText">Suivant</span>
+                        <i className="uil uil-navigator"></i>
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+          </div>
 
-						<button className="nextBtn" type="button">
-							<span className="btnText">Suivant</span>
-							<i className="uil uil-navigator"></i>
-						</button>
-					</div>
+          <div className="form second">
+            <div className="details address">
+              <span className="title">Details Professionels</span>
+              <Formik
+                initialValues={initialValues2}
+                validationSchema={addPersSchema2}
+                onSubmit={(values) => {
+                  console.log(values);
+                }}
+                //onChange={handleChange}
+              >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {professionalDetails.map((item) => (
+                        <div className="input-field">
+                          <label>{item.label}</label>
+                          {item.type === "select" ? (
+                            <>
+                              <Field as="select" name={item.name}>
+                                <option value="" disabled selected>
+                                  {item.placeholder}
+                                </option>
+                                {item?.options?.map((op) => (
+                                  <option value={op.key}>{op.value} </option>
+                                ))}
+                              </Field>
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : item.type == "text" ? (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={item.type}
+                                name={item.name}
+                                placeholder={item.placeholder}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                      {/*<SimpleOptionInput
+                  placeholder="Niveau d'études"
+                  options={niveau_etudes}
+                  name="niveauEtudes"
+                  handleChange={handleChange}
+                />
+                <SimpleInput
+                  placeholder="Fonction"
+                  type="text"
+                  name="fonction"
+                  handleChange={handleChange}
+                />
+                <SimpleInput
+                  placeholder="Date d'embauche"
+                  type="date"
+                  name="dateEmbauche"
+                  handleChange={handleChange}
+                />
+                <SimpleOptionInput
+                  placeholder="Base de paiement"
+                  options={Base_de_paiement}
+                  name="basePaiement"
+                  handleChange={handleChange}
+                />
+                <SimpleInput
+                  placeholder="Taux de paiement"
+                  type="text"
+                  name="tauxPaiement"
+                  handleChange={handleChange}
+                />
 
-					<div className="form second">
-						<div className="details address">
-							<span className="title">Details Professionels</span>
+                <div className="input-field">
+                  <label>Déclaré(e) à la CNSS</label>
+                  <select
+                    onChange={handleDeclaredByCNSSChange}
+                    name="isDeclareCnss"
+                  >
+                    <option disabled defaultValue>
+                      Selectionner
+                    </option>
+                    <option value="false">Non</option>
+                    <option value="true">Oui</option>
+                  </select>
+                </div>
+                <div className="input-field">
+                  <label>Numéro CNSS</label>
+                  <input
+                    type="text"
+                    placeholder="Numéro CNSS"
+                    disabled={isDeclaredByCNSS ? false : true}
+                    onMouseOver={handleSecondInputHover}
+                    name="cnss"
+                    onChange={handleChange}
+                  />
+                  {isDisabled && (
+                    <span
+                      className="disabled-icon"
+                      title="This field is disabled"
+                    >
+                      🚫
+                    </span>
+                  )}
+                </div>
 
-							<div className="fields">
-								<SimpleOptionInput
-									placeholder="Niveau d'études"
-									options={niveau_etudes}
-									name="niveauEtudes"
-									handleChange={handleChange}
-								/>
-								<SimpleInput placeholder="Fonction" type="text" name="fonction" handleChange={handleChange} />
-								<SimpleInput
-									placeholder="Date d'embauche"
-									type="date"
-									name="dateEmbauche"
-									handleChange={handleChange}
-								/>
-								<SimpleOptionInput
-									placeholder="Base de paiement"
-									options={Base_de_paiement}
-									name="basePaiement"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Taux de paiement"
-									type="text"
-									name="tauxPaiement"
-									handleChange={handleChange}
-								/>
+                <SimpleOptionInput
+                  placeholder="Adherent"
+                  options={oui_non}
+                  name="isAdherent"
+                  handleChange={handleChange}
+                />
+                <SimpleInput
+                  placeholder="Date de départ"
+                  type="date"
+                  name="dateDepart"
+                  handleChange={handleChange}
+                />
 
-								<div className="input-field">
-									<label>Déclaré(e) à la CNSS</label>
-									<select onChange={handleDeclaredByCNSSChange} name="isDeclareCnss">
-										<option disabled defaultValue>
-											Selectionner
-										</option>
-										<option value="false">Non</option>
-										<option value="true">Oui</option>
-									</select>
-								</div>
-								<div className="input-field">
-									<label>Numéro CNSS</label>
-									<input
-										type="text"
-										placeholder="Numéro CNSS"
-										disabled={isDeclaredByCNSS ? false : true}
-										onMouseOver={handleSecondInputHover}
-										name="cnss"
-										onChange={handleChange}
-									/>
-									{isDisabled && (
-										<span className="disabled-icon" title="This field is disabled">
-											🚫
-										</span>
-									)}
-								</div>
+                <div className="input-field">
+                  <label>Renseignements divers</label>
+                  <textarea
+                    placeholder="Renseignements divers"
+                    name="renseignements"
+                    onChange={handleChange}
+                  />
+                </div>*/}
+                    </div>
+					<div className="buttons">
+              <div className="backBtn">
+                <i className="uil uil-navigator"></i>
+                <span className="btnText">précédent</span>
+              </div>
 
-								<SimpleOptionInput
-									placeholder="Adherent"
-									options={oui_non}
-									name="isAdherent"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Date de départ"
-									type="date"
-									name="dateDepart"
-									handleChange={handleChange}
-								/>
+              <Link className="backBtn submit" onClick={ ()=>{
+				if(!props.isValid || !props.touched.niveauEtudes){
+					
+				}else{
+					setFormInfos(x => ({...x, ...props.values}));
+					setAjoutOk(true);
+					//console.log(formInfos)
+					//doAdd()
+				}
+					
+			  } }>
+                <span className="btnText">Enregistrer</span>
+                <i className="uil uil-navigator"></i>
+              </Link>
+            </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
 
-								<div className="input-field">
-									<label>Renseignements divers</label>
-									<textarea
-										placeholder="Renseignements divers"
-										name="renseignements"
-										onChange={handleChange}
-									/>
-								</div>
-							</div>
-						</div>
-
-						<div className="buttons">
-							<div className="backBtn">
-								<i className="uil uil-navigator"></i>
-								<span className="btnText">précédent</span>
-							</div>
-
-							<Link className="backBtn submit" onClick={doAdd}>
-								<span className="btnText">Enregistrer</span>
-								<i className="uil uil-navigator"></i>
-							</Link>
-						</div>
-					</div>
-				</form>
-			</div>
-			{show && (
-				<UpdateProfilePicture
-					setZoom={setZoom}
-					crop={crop}
-					setCrop={setCrop}
-					zoom={zoom}
-					getCroppedImage={getCroppedImage}
-					onCropComplete={onCropComplete}
-					setImage={setImage}
-					image={image}
-					setShow={setShow}
-				/>
-			)}
-		</div>
-	);
+            
+          </div>
+        </form>
+      </div>
+      {show && (
+        <UpdateProfilePicture
+          setZoom={setZoom}
+          crop={crop}
+          setCrop={setCrop}
+          zoom={zoom}
+          getCroppedImage={getCroppedImage}
+          onCropComplete={onCropComplete}
+          setImage={setImage}
+          image={image}
+          setShow={setShow}
+        />
+      )}
+    </div>
+  );
 }

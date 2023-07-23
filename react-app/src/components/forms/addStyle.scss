@@ -356,6 +356,12 @@ input[disabled] {
 	left: -10px;
 	font-size: 18px;
 }
+.error {
+	color: #cf1616;
+	font-size: 0.75rem;
+	text-align: left;
+	//margin-top: 0.25rem;
+  }
 
 /*Profile photo*/
 .profile_img_wrap {
