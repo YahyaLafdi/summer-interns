@@ -140,7 +140,7 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 	//=============================================================
 
 	useEffect(() => {
-		const form = document.querySelector("form"),
+		const form = document.querySelector("form") ,
 			nextBtn = form.querySelector(".nextBtn"),
 			backBtn = form.querySelector(".backBtn");
 		nextBtn.addEventListener("click", () => {
@@ -373,7 +373,6 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                   onSubmit={(values) => {
                     console.log(values);
                   }}
-                  //onChange={handleChange}
                 >
                   {(props) => (
                     <Form>
@@ -411,7 +410,9 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                       </div>
                       <button
                         disabled={!props.isValid || !props.touched.matricule}
-                        onClick={() => setFormInfos(x => ({...x, ...props.values}))}
+                        onClick={() =>
+                          setFormInfos((x) => ({ ...x, ...props.values }))
+                        }
                         className="nextBtn"
                         type="button"
                       >
@@ -452,28 +453,52 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                                   <option value={op.key}>{op.value} </option>
                                 ))}
                               </Field>
+							  {/*<p>{props.values.isDeclareCnss}</p>*/}
                               <ErrorMessage
                                 name={item.name}
                                 className="error"
                                 component="div"
                               />
                             </>
-                          ) : item.type == "text" ? (
-                            <>
-                              <Field
-                                type={item.type}
-                                placeholder={item.placeholder}
-                                name={item.name}
-                              />
-                              <ErrorMessage
-                                name={item.name}
-                                className="error"
-                                component="div"
-                              />
-                            </>
+                          ) : (item.type === "text" || item.type === "date" ) ? (
+                            item.name === "cnss" ? (
+                              <div>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  disabled={(props.values.isDeclareCnss=="false" || props.values.isDeclareCnss===null)?true:false}
+                                  onMouseOver={handleSecondInputHover}
+                                  name={item.name}
+                                  onChange={props.handleChange}
+                                />
+                                {isDisabled && (
+                                  <span
+                                    className="disabled-icon"
+                                    title="This field is disabled"
+                                  >
+                                    🚫
+                                  </span>
+                                )}
+								
+                              </div>
+                            ) : (
+                              <>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  name={item.name}
+								  onChange={props.handleChange}
+                                />
+                                <ErrorMessage
+                                  name={item.name}
+                                  className="error"
+                                  component="div"
+                                />
+                              </>
+                            )
                           ) : (
                             <>
-                              <Field
+                              <textarea
                                 type={item.type}
                                 name={item.name}
                                 placeholder={item.placeholder}
@@ -486,120 +511,32 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                             </>
                           )}
                         </div>
-                      ))}
-                      {/*<SimpleOptionInput
-                  placeholder="Niveau d'études"
-                  options={niveau_etudes}
-                  name="niveauEtudes"
-                  handleChange={handleChange}
-                />
-                <SimpleInput
-                  placeholder="Fonction"
-                  type="text"
-                  name="fonction"
-                  handleChange={handleChange}
-                />
-                <SimpleInput
-                  placeholder="Date d'embauche"
-                  type="date"
-                  name="dateEmbauche"
-                  handleChange={handleChange}
-                />
-                <SimpleOptionInput
-                  placeholder="Base de paiement"
-                  options={Base_de_paiement}
-                  name="basePaiement"
-                  handleChange={handleChange}
-                />
-                <SimpleInput
-                  placeholder="Taux de paiement"
-                  type="text"
-                  name="tauxPaiement"
-                  handleChange={handleChange}
-                />
-
-                <div className="input-field">
-                  <label>Déclaré(e) à la CNSS</label>
-                  <select
-                    onChange={handleDeclaredByCNSSChange}
-                    name="isDeclareCnss"
-                  >
-                    <option disabled defaultValue>
-                      Selectionner
-                    </option>
-                    <option value="false">Non</option>
-                    <option value="true">Oui</option>
-                  </select>
-                </div>
-                <div className="input-field">
-                  <label>Numéro CNSS</label>
-                  <input
-                    type="text"
-                    placeholder="Numéro CNSS"
-                    disabled={isDeclaredByCNSS ? false : true}
-                    onMouseOver={handleSecondInputHover}
-                    name="cnss"
-                    onChange={handleChange}
-                  />
-                  {isDisabled && (
-                    <span
-                      className="disabled-icon"
-                      title="This field is disabled"
-                    >
-                      🚫
-                    </span>
-                  )}
-                </div>
-
-                <SimpleOptionInput
-                  placeholder="Adherent"
-                  options={oui_non}
-                  name="isAdherent"
-                  handleChange={handleChange}
-                />
-                <SimpleInput
-                  placeholder="Date de départ"
-                  type="date"
-                  name="dateDepart"
-                  handleChange={handleChange}
-                />
-
-                <div className="input-field">
-                  <label>Renseignements divers</label>
-                  <textarea
-                    placeholder="Renseignements divers"
-                    name="renseignements"
-                    onChange={handleChange}
-                  />
-                </div>*/}
+                      ))}                      
                     </div>
-					<div className="buttons">
-              <div className="backBtn">
-                <i className="uil uil-navigator"></i>
-                <span className="btnText">précédent</span>
-              </div>
+                    <div className="buttons">
+                      <div className="backBtn">
+                        <i className="uil uil-navigator"></i>
+                        <span className="btnText">précédent</span>
+                      </div>
 
-              <Link className="backBtn submit" onClick={ ()=>{
-				if(!props.isValid || !props.touched.niveauEtudes){
-					
-				}else{
-					setFormInfos(x => ({...x, ...props.values}));
-					setAjoutOk(true);
-					//console.log(formInfos)
-					//doAdd()
-				}
-					
-			  } }>
-                <span className="btnText">Enregistrer</span>
-                <i className="uil uil-navigator"></i>
-              </Link>
-            </div>
+                      <Link
+                        className="backBtn submit"
+                        onClick={() => {
+                          if (!props.isValid || !props.touched.niveauEtudes) {
+                          } else {
+                            setFormInfos((x) => ({ ...x, ...props.values }));
+                            setAjoutOk(true);
+                          }
+                        }}
+                      >
+                        <span className="btnText">Enregistrer</span>
+                        <i className="uil uil-navigator"></i>
+                      </Link>
+                    </div>
                   </Form>
                 )}
               </Formik>
             </div>
-
-            
           </div>
         </form>
       </div>

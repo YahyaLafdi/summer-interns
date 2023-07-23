@@ -32,7 +32,7 @@ const nomValidation = Yup.string().required("Obligatoire").max(30,"30 caractère
 
 
 export const addPersSchema = Yup.object().shape({
-    matricule: emailValidation,
+    matricule: requiredValidation,
     nom: nomValidation,
     prenom: nomValidation,    
     cin: cinValidation,
@@ -51,7 +51,7 @@ export const addPersSchema2 = Yup.object().shape({
     basePaiement:requiredValidation,
     tauxPaiement:requiredValidation,
     isDeclareCnss:requiredValidation,
-    cnss:requiredValidation,
+    //cnss:requiredValidation,
     isAdherent:requiredValidation,
     dateDepart:requiredValidation,
     //renseignements:requiredValidation,
