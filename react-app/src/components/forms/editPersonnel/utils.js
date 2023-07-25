@@ -1,37 +1,8 @@
-import * as Yup from 'yup';
-
-export const situation_familiale = [
-    { key: "Marié(e)", value: "Marié(e)" },
-    { key: "Célébataire", value: "Célébataire" },
-    { key: "Divorcé(e)", value: "Divorcé(e)" },
-    { key: "Veuf(ve)", value: "Veuf(ve)" },
-];
-export const sexe = [
-    { key: "Féminin", value: "Féminin" },
-    { key: "Masculin", value: "Masculin" },
-];
-export const niveau_etudes = [
-    { key: "Sans niveau", value: "Sans niveau" },
-    { key: "Primaire", value: "Primaire" },
-    { key: "Secondaire", value: "Secondaire" },
-    { key: "Lycée", value: "Lycée" },
-    { key: "Supérieur", value: "Supérieur" },
-];
-
-export const ouiOuNon = [
-    {key: true, value: "Oui"},
-    {key: false, value: "Non"}
-]
-const phoneRegEx = /^((\+\d{1,3})|0?)(\d{9})$/;
-const emailRegEx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
-export const requiredValidation = Yup.string().required("Obligatoire");
-export const emailValidation = Yup.string().matches(emailRegEx, "Email invalid").required("Obligatoire");
-export const phoneValidation = Yup.string().required("Obligatoire").matches(phoneRegEx, "Numéro téléphone invalid")
-export const cinValidation = Yup.string().required("Obligatoire").max(10,"10 caractères au maximum")
-export const nomValidation = Yup.string().required("Obligatoire").max(30,"30 caractères au maximum");
+import * as Yup from "yup";
+import { base_de_paiement, cinValidation, niveau_etudes, nomValidation, ouiOuNon, phoneValidation, requiredValidation, sexe, situation_familiale } from "../addPersonnel/utils";
 
 
-export const addPersSchema = Yup.object().shape({
+export const updatePersSchema = Yup.object().shape({
     matricule: requiredValidation,
     nom: nomValidation,
     prenom: nomValidation,    
@@ -43,8 +14,8 @@ export const addPersSchema = Yup.object().shape({
     ddn:requiredValidation,
     telephone: phoneValidation,
     //nombreEnfants:requiredValidation
-  });
-export const addPersSchema2 = Yup.object().shape({
+})
+export const updateProfessionalSchema = Yup.object().shape({
     niveauEtudes:requiredValidation,
     fonction:requiredValidation,
     dateEmbauche:requiredValidation,
@@ -57,8 +28,7 @@ export const addPersSchema2 = Yup.object().shape({
     //renseignements:requiredValidation,
 })
 
-
-export const personalDetails = [
+export const editPersDetails = [
     {
         placeholder:"Matricule",
         label:"Matricule",
@@ -126,15 +96,10 @@ export const personalDetails = [
         label:"Nombre d'enfants",
         type:"number",
         name:"nombreEnfants"
-    },
+    }
 ]
-export const base_de_paiement = [
-    { key: "Horaire", value: "Horaire" },
-    { key: "Hebdomadaire", value: "Hebdomadaire" },
-    { key: "Quinzaine", value: "Quinzaine" },
-    { key: "mensuelle", value: "mensuelle" },
-];
-export const professionalDetails = [
+
+export const editProfessionalDetails = [
     {
         placeholder: "Niveau d'études",
         label: "Niveau d'étude",

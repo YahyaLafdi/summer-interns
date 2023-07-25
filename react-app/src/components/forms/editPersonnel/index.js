@@ -6,6 +6,8 @@ import SimpleOptionInput from "../../inputs/simpleOptionInput";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import UpdateProfilePicture from "../../profilePicture/UpdateProfilePicture";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { editPersDetails, editProfessionalDetails, updatePersSchema, updateProfessionalSchema } from "./utils";
 
 export default function EditPersonnel({ visible, activeTab, setLoading, refetch, setRefetch, item }) {
 	const refInput = useRef(null);
@@ -159,7 +161,8 @@ export default function EditPersonnel({ visible, activeTab, setLoading, refetch,
 		const { name, value } = e.target;
 		setFormInfos({ ...formInfos, [name]: value });
 	};
-
+	const [ajouOk, setAjoutOk] = useState(false);
+useEffect(() => {
 	const doAdd = async () => {
 		try {
 			setLoading(true);
@@ -180,6 +183,12 @@ export default function EditPersonnel({ visible, activeTab, setLoading, refetch,
 			console.log(error);
 		}
 	};
+	if(ajouOk) {
+		doAdd();
+	}
+}, [ajouOk])
+
+	
 	const uploadImage = async (img) => {
 		const blob = await fetch(img).then((r) => r.blob());
 		const reader = new FileReader();
@@ -205,253 +214,281 @@ export default function EditPersonnel({ visible, activeTab, setLoading, refetch,
 		console.log(formInfos);
 	});
 	return (
-		<div className="blur">
-			<div className="container">
-				<i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
-				<header>Modifier un personnel</header>
+    <div className="blur">
+      <div className="container">
+        <i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
+        <header>Modifier un personnel</header>
 
-				<form action="#">
-					<input
-						type="file"
-						ref={refInput}
-						onChange={handleImage}
-						accept="image/jpeg,image/png,image/webp,image/gif"
-						hidden
-					/>
-					<div className="form first">
-						<div className="details personal">
-							<span className="title">Détails Personnels</span>
-							<div className="profile_img_wrap">
-								<div className="profile_w_left">
-									<div className="profile_w_img">
-										<div
-											className="profile_w_bg"
-											style={{
-												backgroundSize: "cover",
-												backgroundImage: `url(${image})`,
-											}}
-										></div>
-										<div className="profile_circle hover1" onClick={() => uploadComp()}>
-											<img src="./images/icons/camera.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
+        <form action="#">
+          <input
+            type="file"
+            ref={refInput}
+            onChange={handleImage}
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+          />
+          <div className="form first">
+            <div className="details personal">
+              <span className="title">Détails Personnels</span>
+              <div className="profile_img_wrap">
+                <div className="profile_w_left">
+                  <div className="profile_w_img">
+                    <div
+                      className="profile_w_bg"
+                      style={{
+                        backgroundSize: "cover",
+                        backgroundImage: `url(${image})`,
+                      }}
+                    ></div>
+                    <div
+                      className="profile_circle hover1"
+                      onClick={() => uploadComp()}
+                    >
+                      <img src="./images/icons/camera.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-							<div className="fields">
-								<SimpleInput
-									placeholder="Matricule"
-									type="text"
-									name="matricule"
-									handleChange={handleChange}
-									itemValue={item.matricule}
-								/>
-								<SimpleInput
-									placeholder="Nom"
-									type="text"
-									name="nom"
-									handleChange={handleChange}
-									itemValue={item.nom}
-								/>
-								<SimpleInput
-									placeholder="Prénom"
-									type="text"
-									name="prenom"
-									handleChange={handleChange}
-									itemValue={item.prenom}
-								/>
-								<SimpleOptionInput
-									placeholder="Sexe"
-									options={sexe}
-									name="sexe"
-									handleChange={handleChange}
-									itemValue={item.sexe}
-								/>
-								<SimpleOptionInput
-									placeholder="Situation familiale"
-									options={situation_familiale}
-									name="situationFamiliale"
-									handleChange={handleChange}
-									itemValue={item.situationFamiliale}
-								/>
-								<SimpleInput
-									placeholder="CIN"
-									type="text"
-									name="cin"
-									handleChange={handleChange}
-									itemValue={item.cin}
-								/>
-								<SimpleInput
-									placeholder="Adresse"
-									type="text"
-									name="adresse"
-									handleChange={handleChange}
-									itemValue={item.adresse}
-								/>
-								<SimpleInput
-									placeholder="Ville"
-									type="text"
-									name="ville"
-									handleChange={handleChange}
-									itemValue={item.ville}
-								/>
-								<SimpleInput
-									placeholder="Date de naissance"
-									type="date"
-									name="ddn"
-									handleChange={handleChange}
-									itemValue={item.ddn}
-								/>
-								<SimpleInput
-									placeholder="Tétéphone"
-									type="tel"
-									name="telephone"
-									handleChange={handleChange}
-									itemValue={item.telephone}
-								/>
-								<SimpleInput
-									placeholder="Nombre d'enfants"
-									type="number"
-									name="nombreEnfants"
-									handleChange={handleChange}
-									itemValue={item.nombreEnfants}
-								/>
-							</div>
-						</div>
+              <Formik initialValues={item} validationSchema={updatePersSchema}>
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {editPersDetails.map((item) => (
+                        <div className="input-field">
+                          <label>{item.label}</label>
+                          {item.type === "select" ? (
+                            <Field as="select" name={item.name}>
+                              <option value="" disabled selected>
+                                {item.placeholder}
+                              </option>
+                              {item?.options?.map((op) => (
+                                <option value={op.key}>{op.value} </option>
+                              ))}
+                            </Field>
+                          ) : item.name === "nombreEnfants" ? (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                                onChange={(e) => {
+                                  //setNbEnfants(e.target.value);
+                                  const { value } = e.target;
+                                  const enfants = Array.from(
+                                    { length: value },
+                                    () => ({
+                                      nom: "",
+                                      isScolarised: false,
+                                      ddn: "",
+                                    })
+                                  );
+                                  //console.log(enfants);
+                                  props.setFieldValue("enfants", enfants);
+                                  props.handleChange(e);
+                                }}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                        disabled={!props.isValid }
+                        onClick={() =>
+                          setFormInfos((x) => ({ ...x, ...props.values }))
+                        }
+                        className="nextBtn"
+                        type="button"
+                      >
+                        <span className="btnText">Suivant</span>
+                        <i className="uil uil-navigator"></i>
+                      </button>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+          <div className="form second">
+            <div className="details address">
+              <span className="title">Details Professionels</span>
+			  <Formik
+                initialValues={item}
+                validationSchema={updateProfessionalSchema}
+                onSubmit={(values) => {
+                  console.log(values);
+                }}
+                //onChange={handleChange}
+              >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {editProfessionalDetails.map((item) => (
+                        <div className="input-field">
+                          <label>{item.label}</label>
+                          {item.type === "select" ? (
+                            <>
+                              <Field as="select" name={item.name}>
+                                <option value="" disabled selected>
+                                  {item.placeholder}
+                                </option>
+                                {item?.options?.map((op) => (
+                                  <option value={op.key}>{op.value} </option>
+                                ))}
+                              </Field>
+                              {/*<p>{props.values.isDeclareCnss}</p>*/}
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : item.type === "text" ||
+                            item.type === "date" ||
+                            item.type === "number" ? (
+                            item.name === "cnss" ||
+                            item.name === "nbrPartSociale" ? (
+                              <div>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  disabled={
+                                    (item.name === "cnss" &&
+                                      props.values.isDeclareCnss != "true") ||
+                                    (item.name == "nbrPartSociale" &&
+                                      props.values.isAdherent != "true")
+                                  }
+                                  //onMouseOver={handleSecondInputHover}
+                                  name={item.name}
+                                  //onChange={props.handleChange}
+                                />
+                                {isDisabled && (
+                                  <span
+                                    className="disabled-icon"
+                                    title="This field is disabled"
+                                  >
+                                    🚫
+                                  </span>
+                                )}
+                              </div>
+                            ) : item.name === "dda" ? (
+                              <>
+                                <div>
+                                  <Field
+                                    type={item.type}
+                                    name={item.name}
+                                    disabled={props.values.isAdherent != "true"}
+                                  />
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  name={item.name}
+                                  //onChange={props.handleChange}
+                                />
+                                <ErrorMessage
+                                  name={item.name}
+                                  className="error"
+                                  component="div"
+                                />
+                              </>
+                            )
+                          ) : (
+                            <>
+                              <Field
+                                as="textarea"
+                                //type={item.type}
+                                name={item.name}
+                                placeholder={item.placeholder}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
 
-						<button className="nextBtn" type="button">
-							<span className="btnText">Suivant</span>
-							<i className="uil uil-navigator"></i>
-						</button>
-					</div>
+                    <div className="buttons">
+                      <div className="backBtn">
+                        <i className="uil uil-navigator"></i>
+                        <span className="btnText">précédent</span>
+                      </div>
 
-					<div className="form second">
-						<div className="details address">
-							<span className="title">Details Professionels</span>
+                      <Link
+                        className="backBtn submit"
+                        onClick={() => {
+                          if (!props.isValid ) {
+                          } else {
+                            setFormInfos((x) => ({ ...x, ...props.values }));
+                            setAjoutOk(true);
+                          }
+                        }}
+                      >
+                        <span className="btnText">Enregistrer</span>
+                        <i className="uil uil-navigator"></i>
+                      </Link>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
 
-							<div className="fields">
-								<SimpleOptionInput
-									placeholder="Niveau d'études"
-									options={niveau_etudes}
-									name="niveauEtudes"
-									handleChange={handleChange}
-									itemValue={item.niveauEtudes}
-								/>
-								<SimpleInput
-									placeholder="Fonction"
-									type="text"
-									name="fonction"
-									handleChange={handleChange}
-									itemValue={item.fonction}
-								/>
-								<SimpleInput
-									placeholder="Date d'embauche"
-									type="date"
-									name="dateEmbauche"
-									handleChange={handleChange}
-									itemValue={item.dateEmbauche}
-								/>
-								<SimpleOptionInput
-									placeholder="Base de paiement"
-									options={Base_de_paiement}
-									name="basePaiement"
-									handleChange={handleChange}
-									itemValue={item.basePaiement}
-								/>
-								<SimpleInput
-									placeholder="Taux de paiement"
-									type="text"
-									name="tauxPaiement"
-									handleChange={handleChange}
-									itemValue={item.tauxPaiement}
-								/>
+            {/*<div className="buttons">
+              <div className="backBtn">
+                <i className="uil uil-navigator"></i>
+                <span className="btnText">précédent</span>
+              </div>
 
-								<div className="input-field">
-									<label>Déclaré(e) par CNSS</label>
-									<select
-										onChange={handleDeclaredByCNSSChange}
-										name="isDeclareCnss"
-										defaultValue={item.isDeclareCnss}
-									>
-										<option disabled defaultValue>
-											Selectionner
-										</option>
-										<option value="false">Non</option>
-										<option value="true">Oui</option>
-									</select>
-								</div>
-								<div className="input-field">
-									<label>Numéro CNSS</label>
-									<input
-										type="text"
-										placeholder="Numéro CNSS"
-										disabled={isDeclaredByCNSS ? false : true}
-										onMouseOver={handleSecondInputHover}
-										name="cnss"
-										onChange={handleChange}
-										defaultValue={item.cnss}
-									/>
-									{isDisabled && (
-										<span className="disabled-icon" title="This field is disabled">
-											🚫
-										</span>
-									)}
-								</div>
-
-								<SimpleOptionInput
-									placeholder="Adherent"
-									options={oui_non}
-									name="isAdherent"
-									handleChange={handleChange}
-									itemValue={item.isAdherent}
-								/>
-								<SimpleInput
-									placeholder="Date de départ"
-									type="date"
-									name="dateDepart"
-									handleChange={handleChange}
-									itemValue={item.dateDepart}
-								/>
-
-								<div className="input-field">
-									<label>Rensignements divers</label>
-									<textarea
-										placeholder="Rensignements divers"
-										name="renseignements"
-										onChange={handleChange}
-										defaultValue={item.renseignements}
-									/>
-								</div>
-							</div>
-						</div>
-
-						<div className="buttons">
-							<div className="backBtn">
-								<i className="uil uil-navigator"></i>
-								<span className="btnText">précédent</span>
-							</div>
-
-							<Link className="backBtn submit" onClick={doAdd}>
-								<span className="btnText">Enregistrer</span>
-								<i className="uil uil-navigator"></i>
-							</Link>
-						</div>
-					</div>
-				</form>
-			</div>
-			{show && (
-				<UpdateProfilePicture
-					setZoom={setZoom}
-					crop={crop}
-					setCrop={setCrop}
-					zoom={zoom}
-					getCroppedImage={getCroppedImage}
-					onCropComplete={onCropComplete}
-					setImage={setImage}
-					image={image}
-					setShow={setShow}
-				/>
-			)}
-		</div>
-	);
+              <Link className="backBtn submit" onClick={doAdd}>
+                <span className="btnText">Enregistrer</span>
+                <i className="uil uil-navigator"></i>
+              </Link>
+            </div>*/}
+          </div>
+        </form>
+      </div>
+      {show && (
+        <UpdateProfilePicture
+          setZoom={setZoom}
+          crop={crop}
+          setCrop={setCrop}
+          zoom={zoom}
+          getCroppedImage={getCroppedImage}
+          onCropComplete={onCropComplete}
+          setImage={setImage}
+          image={image}
+          setShow={setShow}
+        />
+      )}
+    </div>
+  );
 }

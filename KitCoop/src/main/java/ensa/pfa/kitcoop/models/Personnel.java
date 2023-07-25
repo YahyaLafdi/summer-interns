@@ -116,16 +116,4 @@ public class Personnel {
     //@JsonIgnore
     @JsonManagedReference
     private List<Enfant> enfants;
-
-    public void addChild(Enfant enfant) {
-        enfants.add(enfant);
-        enfant.setParent(this);
-    }
-
-    public void removeChild(Enfant enfant) {
-        enfants.remove(enfant);
-        enfant.setParent(null);
-    }
-
-
 }
