@@ -10,7 +10,7 @@ export default function Notifications() {
 
 	const fetchNotifications = async () => {
 		try {
-			const response = await axios.get("http://localhost:8080/api/notifications");
+			const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/notifications}`);
 			const notifications = response.data;
 			setNotifications(notifications);
 		} catch (error) {
@@ -32,7 +32,7 @@ export default function Notifications() {
 
 		const intervalId = setInterval(() => {
 			fetchNotifications();
-		}, 5000); // 5000 milliseconds = 5 seconds
+		}, 60000); // 60000 milliseconds = 5 seconds
 
 		document.addEventListener("mousedown", handleOutsideClick);
 
