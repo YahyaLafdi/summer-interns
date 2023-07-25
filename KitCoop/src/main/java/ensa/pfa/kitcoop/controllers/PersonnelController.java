@@ -38,28 +38,6 @@ public class PersonnelController {
     @PostMapping("/api/personnels")
     public ResponseEntity<APIResponse> createPersonnel(@RequestBody Personnel personnel){
         APIResponse apiResponse = personnelService.createPersonnel(personnel);
-        Adherent adherent = new Adherent();
-        if(personnel.getIsAdherent()){
-            adherent.setDdn(personnel.getDdn());
-            adherent.setDdd(personnel.getDateDepart());
-            adherent.setCin(personnel.getCin());
-            adherent.setNbrEnfant(personnel.getNombreEnfants());
-            adherent.setAdresse(personnel.getAdresse());
-            adherent.setVille(personnel.getVille());
-            adherent.setSituationFamiliale(personnel.getSituationFamiliale());
-            adherent.setNiveauEtudes(personnel.getNiveauEtudes());
-            adherent.setNom(personnel.getNom());
-            adherent.setPrenom(personnel.getPrenom());
-            adherent.setPhotoUrl(personnel.getPhotoUrl());
-            adherent.setTelephone(personnel.getTelephone());
-            adherent.setDda(personnel.getDda());
-            adherent.setNbrPartSociale(personnel.getNbrPartSociale());
-            adherent.setMotif(personnel.getMatricule());
-
-
-            //adherent.setIsAdherent(personnel.getIsAdherent());
-            adherentService.createAdherent(adherent);
-        }
         return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
     }
 

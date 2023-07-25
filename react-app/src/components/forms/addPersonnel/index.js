@@ -2,13 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./../addStyle.scss";
 import UpdateProfilePicture from "../../profilePicture/UpdateProfilePicture";
 import getCroppedImg from "../../../utils/getCroppedImg";
-import SimpleInput from "../../inputs/simpleInput";
-import SimpleOptionInput from "../../inputs/simpleOptionInput";
+//import SimpleInput from "../../inputs/simpleInput";
+//import SimpleOptionInput from "../../inputs/simpleOptionInput";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import * as Yup from "yup";
 
 import { Link } from "react-router-dom";
-import { addPersSchema, addPersSchema2, personalDetails, professionalDetails } from "./utils";
+import { addPersSchema, addPersSchema2, personalDetails, professionalDetails} from "./utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
 export default function AddPersonnel({ visible, activeTab, setLoading, refetch, setRefetch }) {
@@ -39,6 +40,7 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		telephone: "",
 		situationFamiliale: "",
 		nombreEnfants: "",
+		enfants:[],
 		dateDepart: "",
 		motif:""
 	};
@@ -53,7 +55,8 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		ville:"",
 		ddn:"",
 		telephone:"",
-		nombreEnfants:0
+		nombreEnfants:0,
+		enfants:[]
 	}
 	const initialValues2 = {
 		niveauEtudes:"",
@@ -72,12 +75,13 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 
 	const [isDeclaredByCNSS, setIsDeclaredByCNSS] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
+	const [listEnfants, setListEnfants] = useState([])
 
 	const handleDeclaredByCNSSChange = (event) => {
 		handleChange(event);
 		setIsDeclaredByCNSS(event.target.value === "true");
 		setIsDisabled(false);
-	};
+	}
 	const handleSecondInputHover = () => {
 		if (isDisabled) {
 			alert("Second input field is disabled!");
@@ -395,6 +399,36 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                                   <option value={op.key}>{op.value} </option>
                                 ))}
                               </Field>
+                            ) : item.name === "nombreEnfants" ? (
+                              <>
+                                <Field
+                                  type={item.type}
+                                  placeholder={item.placeholder}
+                                  name={item.name}
+                                  options={item.options}
+                                  validate={item.validate}
+                                  onChange={(e) => {
+                                    //setNbEnfants(e.target.value);
+                                    const { value } = e.target;
+                                    const enfants = Array.from(
+                                      { length: value },
+                                      () => ({
+                                        nom: "",
+                                        isScolarised: false,
+                                        ddn: "",
+                                      })
+                                    );
+                                    //console.log(enfants);
+                                    props.setFieldValue("enfants", enfants);
+                                    props.handleChange(e);
+                                  }}
+                                />
+                                <ErrorMessage
+                                  name={item.name}
+                                  className="error"
+                                  component="div"
+                                />
+                              </>
                             ) : (
                               <>
                                 <Field
@@ -414,6 +448,44 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                           </div>
                         ))}
                       </div>
+                      {props.values.nombreEnfants > 0 && (
+                        <div>
+                          <p className="title">Ajouter vous enfants ici</p>
+                          {props.values.enfants.map((enfant, index) => (
+                            <div className="enfants">
+                              {/*<p>Enfant N° {index + 1}</p>*/}
+                              <div className="enfant-input">
+                                <div className="enfant nom input-field">
+                                  <label htmlFor="nom">Nom de l'enfant n° {index+1} </label>
+                                  <Field
+                                    type="text"
+                                    name={`enfants[${index}].nom`}
+                                    placeholder="nom"
+                                  />								  
+                                </div>
+								<div className="ddnScol">
+                                <div className="enfant input-field">
+                                  <label htmlFor="ddn">Date de naissance</label>
+                                  <Field
+                                    type="date"
+                                    name={`enfants[${index}].ddn`}
+                                  />
+                                </div>
+                                <div className="enfant input-field scol">
+                                  <label htmlFor="isScolarised">
+                                    Scolarisé
+                                  </label>
+                                  <Field
+                                    type="checkbox"
+                                    name={`enfants[${index}].isScolarised`}
+                                  />
+                                </div>
+								</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <button
                         disabled={!props.isValid || !props.touched.matricule}
                         onClick={() =>
@@ -459,24 +531,31 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                                   <option value={op.key}>{op.value} </option>
                                 ))}
                               </Field>
-							  {/*<p>{props.values.isDeclareCnss}</p>*/}
+                              {/*<p>{props.values.isDeclareCnss}</p>*/}
                               <ErrorMessage
                                 name={item.name}
                                 className="error"
                                 component="div"
                               />
                             </>
-                          ) : (item.type === "text" || item.type === "date" || item.type === "number" ) ? (
-                            (item.name === "cnss" || item.name === "nbrPartSociale" ) ? (
+                          ) : item.type === "text" ||
+                            item.type === "date" ||
+                            item.type === "number" ? (
+                            item.name === "cnss" ||
+                            item.name === "nbrPartSociale" ? (
                               <div>
                                 <Field
                                   type={item.type}
                                   placeholder={item.placeholder}
-                                  disabled={item.name === "cnss" && props.values.isDeclareCnss!="true" 
-								  || item.name=="nbrPartSociale" && props.values.isAdherent!="true" }
+                                  disabled={
+                                    (item.name === "cnss" &&
+                                      props.values.isDeclareCnss != "true") ||
+                                    (item.name == "nbrPartSociale" &&
+                                      props.values.isAdherent != "true")
+                                  }
                                   //onMouseOver={handleSecondInputHover}
                                   name={item.name}
-                                 //onChange={props.handleChange}
+                                  //onChange={props.handleChange}
                                 />
                                 {isDisabled && (
                                   <span
@@ -486,37 +565,37 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                                     🚫
                                   </span>
                                 )}
-								
                               </div>
+                            ) : item.name === "dda" ? (
+                              <>
+                                <div>
+                                  <Field
+                                    type={item.type}
+                                    name={item.name}
+                                    disabled={props.values.isAdherent != "true"}
+                                  />
+                                </div>
+                              </>
                             ) : (
-								item.name==="dda"?
-								(<>
-									<div>
-										<Field
-											type={item.type}
-											name={item.name}	
-											disabled={props.values.isAdherent!="true"}
-										/>
-									</div>
-								</>) :
-                              (<>
+                              <>
                                 <Field
                                   type={item.type}
                                   placeholder={item.placeholder}
                                   name={item.name}
-								  //onChange={props.handleChange}
+                                  //onChange={props.handleChange}
                                 />
                                 <ErrorMessage
                                   name={item.name}
                                   className="error"
                                   component="div"
                                 />
-                              </>)
+                              </>
                             )
                           ) : (
                             <>
-                              <textarea
-                                type={item.type}
+                              <Field
+                                as="textarea"
+                                //type={item.type}
                                 name={item.name}
                                 placeholder={item.placeholder}
                               />
@@ -528,8 +607,9 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                             </>
                           )}
                         </div>
-                      ))}                      
+                      ))}
                     </div>
+
                     <div className="buttons">
                       <div className="backBtn">
                         <i className="uil uil-navigator"></i>

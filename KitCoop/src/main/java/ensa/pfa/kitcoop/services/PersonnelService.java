@@ -3,9 +3,13 @@ package ensa.pfa.kitcoop.services;
 import ensa.pfa.kitcoop.exception.InternalErrorException;
 import ensa.pfa.kitcoop.models.Adherent;
 import ensa.pfa.kitcoop.models.Client;
+import ensa.pfa.kitcoop.models.Enfant;
 import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
+import ensa.pfa.kitcoop.repositories.EnfantRepository;
 import ensa.pfa.kitcoop.repositories.PersonnelRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +21,14 @@ import java.util.Optional;
 public class PersonnelService {
 
     private final PersonnelRepository personnelRepository;
+    private final AdherentService adherentService;
+    private final EnfantRepository enfantRepository;
+    Log log = LogFactory.getLog(this.getClass());
 
-    public PersonnelService(PersonnelRepository personnelRepository){
+    public PersonnelService(PersonnelRepository personnelRepository, AdherentService adherentService, EnfantRepository enfantRepository){
         this.personnelRepository = personnelRepository;
+        this.adherentService = adherentService;
+        this.enfantRepository = enfantRepository;
     }
 
     public APIResponse getAllPersonnels(){
@@ -47,10 +56,38 @@ public class PersonnelService {
 
     public APIResponse createPersonnel(Personnel personnel){
         try {
+           // enfantRepository.saveAll(personnel.getEnfants());
             Personnel newPersonnel = new Personnel();
             personOpr(personnel, newPersonnel);
+            //enfantRepository.saveAll(newPersonnel.getEnfants());
             Personnel savedPersonnel = personnelRepository.save(newPersonnel);
-            return new APIResponse(HttpStatus.CREATED.value(), savedPersonnel, "Ajouter avec success");
+            for(Enfant e : personnel.getEnfants()){
+                e.setParent(savedPersonnel);
+                log.info(e);
+                System.out.println(e);
+            }
+            enfantRepository.saveAll(personnel.getEnfants());
+            Adherent adherent = new Adherent();
+            if(personnel.getIsAdherent()) {
+                adherent.setDdn(personnel.getDdn());
+                adherent.setDdd(personnel.getDateDepart());
+                adherent.setCin(personnel.getCin());
+                adherent.setNbrEnfant(personnel.getNombreEnfants());
+                adherent.setAdresse(personnel.getAdresse());
+                adherent.setVille(personnel.getVille());
+                adherent.setSituationFamiliale(personnel.getSituationFamiliale());
+                adherent.setNiveauEtudes(personnel.getNiveauEtudes());
+                adherent.setNom(personnel.getNom());
+                adherent.setPrenom(personnel.getPrenom());
+                adherent.setPhotoUrl(personnel.getPhotoUrl());
+                adherent.setTelephone(personnel.getTelephone());
+                adherent.setDda(personnel.getDda());
+                adherent.setNbrPartSociale(personnel.getNbrPartSociale());
+                adherent.setMotif(personnel.getMatricule());
+                adherentService.createAdherent(adherent);
+            }
+            log.info("Nouveau personnel ajouté avec succès !");
+            return new APIResponse(HttpStatus.CREATED.value(), personnel, "Ajouter avec success");
         }catch (Exception e){
             throw new InternalErrorException("Quelque chose s'est mal passé. Réessayer  plus tard...");
         }

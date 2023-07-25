@@ -24,11 +24,11 @@ const ouiOuNon = [
 ]
 const phoneRegEx = /^((\+\d{1,3})|0?)(\d{9})$/;
 const emailRegEx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
-const requiredValidation = Yup.string().required("Obligatoire");
+export const requiredValidation = Yup.string().required("Obligatoire");
 const emailValidation = Yup.string().matches(emailRegEx, "Email invalid").required("Obligatoire");
 const phoneValidation = Yup.string().required("Obligatoire").matches(phoneRegEx, "Numéro téléphone invalid")
 const cinValidation = Yup.string().required("Obligatoire").max(10,"10 caractères au maximum")
-const nomValidation = Yup.string().required("Obligatoire").max(30,"30 caractères au maximum");
+export const nomValidation = Yup.string().required("Obligatoire").max(30,"30 caractères au maximum");
 
 
 export const addPersSchema = Yup.object().shape({
@@ -53,7 +53,7 @@ export const addPersSchema2 = Yup.object().shape({
     isDeclareCnss:requiredValidation,
     //cnss:requiredValidation,
     isAdherent:requiredValidation,
-    dateDepart:requiredValidation,
+    //dateDepart:requiredValidation,
     //renseignements:requiredValidation,
 })
 
