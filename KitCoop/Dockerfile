@@ -10,3 +10,4 @@ COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8082
 ENTRYPOINT ["sh", "-c"]
 CMD ["java -jar app.jar"]
+
