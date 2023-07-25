@@ -19,6 +19,8 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 	const fields = {
 		matricule: "",
 		isAdherent: "",
+		dateAdhesion: "",
+		nbrPartSociale:0,
 		nom: "",
 		prenom: "",
 		niveauEtudes: "",
@@ -38,6 +40,7 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		situationFamiliale: "",
 		nombreEnfants: "",
 		dateDepart: "",
+		motif:""
 	};
 	const initialValues1 = {
 		matricule:"",
@@ -60,6 +63,9 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 		tauxPaiement:"",
 		isDeclareCnss:"",
 		cnss:"",
+		dateAdhesion: "",
+		nbrPartSociale:0,
+		dateDepart:"",
 		//adherent:"",
 		renseignements:""
 	}
@@ -460,16 +466,17 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                                 component="div"
                               />
                             </>
-                          ) : (item.type === "text" || item.type === "date" ) ? (
-                            item.name === "cnss" ? (
+                          ) : (item.type === "text" || item.type === "date" || item.type === "number" ) ? (
+                            (item.name === "cnss" || item.name === "nbrPartSociale" ) ? (
                               <div>
                                 <Field
                                   type={item.type}
                                   placeholder={item.placeholder}
-                                  disabled={(props.values.isDeclareCnss=="false" || props.values.isDeclareCnss===null)?true:false}
-                                  onMouseOver={handleSecondInputHover}
+                                  disabled={item.name === "cnss" && props.values.isDeclareCnss!="true" 
+								  || item.name=="nbrPartSociale" && props.values.isAdherent!="true" }
+                                  //onMouseOver={handleSecondInputHover}
                                   name={item.name}
-                                  onChange={props.handleChange}
+                                 //onChange={props.handleChange}
                                 />
                                 {isDisabled && (
                                   <span
@@ -482,19 +489,29 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
 								
                               </div>
                             ) : (
-                              <>
+								item.name==="dda"?
+								(<>
+									<div>
+										<Field
+											type={item.type}
+											name={item.name}	
+											disabled={props.values.isAdherent!="true"}
+										/>
+									</div>
+								</>) :
+                              (<>
                                 <Field
                                   type={item.type}
                                   placeholder={item.placeholder}
                                   name={item.name}
-								  onChange={props.handleChange}
+								  //onChange={props.handleChange}
                                 />
                                 <ErrorMessage
                                   name={item.name}
                                   className="error"
                                   component="div"
                                 />
-                              </>
+                              </>)
                             )
                           ) : (
                             <>

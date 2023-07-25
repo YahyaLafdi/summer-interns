@@ -188,10 +188,28 @@ export const professionalDetails = [
         options:ouiOuNon
     },
     {
+        placeholder: "Nombre de parts sociales",
+        label: "Nombres de parts sociales",
+        type: "number",
+        name: "nbrPartSociale"
+    },
+    {
+        placeholder: "Date d'adhésion",
+        label: "Date d'adhésion",
+        type: "date",
+        name: "dda"
+    },
+    {
         placeholder:"Date de départ",
         label:"Date de départ",
         type:"date",
         name:"dateDepart",
+    },
+    {
+        placeholder: "Motif de départ",
+        label:"Motif de départ",
+        type: "text",
+        name: "motif"
     },
     {
         placeholder:"Renseignements divers",

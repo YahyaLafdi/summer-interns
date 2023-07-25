@@ -53,6 +53,17 @@ public class Personnel {
     @Column(name = "DATE_NAISSANCE")
     private Date ddn;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "ADHESION_DATE")
+    private Date dda;
+
+    @Column(name = "MOTIF")
+    private String motif;
+
+    @Column(name = "NB_PARTS_SOCIALES")
+    private int nbrPartSociale;
+
+
     @Column(name = "FONCTION")
     private String fonction;
 

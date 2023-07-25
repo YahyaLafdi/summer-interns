@@ -117,6 +117,9 @@ public class PersonnelService {
         _personnel.setNombreEnfants(personnel.getNombreEnfants());
         _personnel.setDateDepart(personnel.getDateDepart());
         _personnel.setRenseignements(personnel.getRenseignements());
+        _personnel.setDda(personnel.getDda());
+        _personnel.setMotif(personnel.getMotif());
+        _personnel.setNbrPartSociale(personnel.getNbrPartSociale());
     }
 
 }
