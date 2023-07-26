@@ -5,6 +5,7 @@ import AddClient from "../components/forms/addClient";
 import AddFournisseur from "../components/forms/addFournisseur";
 import AddMatiere from "../components/forms/addMatiere";
 import AddPersonnel from "../components/forms/addPersonnel";
+import AddPointage from "../components/forms/addPointage/AddPointage";
 import AddProduit from "../components/forms/addProduit";
 import AddUtilisateur from "../components/forms/addUtilisateur";
 
@@ -28,6 +29,16 @@ export default function GetAddFormForActiveTab({
 					setLoading={setLoading}
 				/>
 			);
+		case "pointage" : 
+			return (
+				<AddPointage
+					visible={visible}
+					activeTab={activeTab}
+					setRefetch={setRefetch}
+					refetch={refetch}
+					setLoading={setLoading}
+				/>
+			)
 		case "adherent":
 			return (
 				<AddAdherent

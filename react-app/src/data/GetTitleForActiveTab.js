@@ -16,6 +16,8 @@ export default function GetTitleForActiveTab(activeTab) {
 			return "Gestion produits";
 		case "achat":
 			return "Vos achats";
+		case "pointage":
+			return "Pointage des personnels";
 
 		default:
 			return [];

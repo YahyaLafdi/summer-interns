@@ -376,7 +376,6 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                 />
               </div>
 
-              <div>
                 <Formik
                   initialValues={initialValues1}
                   validationSchema={addPersSchema}
@@ -500,7 +499,6 @@ export default function AddPersonnel({ visible, activeTab, setLoading, refetch, 
                     </Form>
                   )}
                 </Formik>
-              </div>
             </div>
           </div>
 

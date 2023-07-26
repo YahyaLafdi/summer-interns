@@ -95,6 +95,17 @@ export default function NavBar({ isAdmin, activeTab, setVisible, setActiveTab, s
 						</li>
 						<li className="nav-link">
 							<Link
+								className={activeTab === "pointage" ? "active" : ""}
+								onClick={() => {
+									handleTabClick("pointage");
+								}}
+							>
+								<img src="./images/icons/add-friend.png" alt="" />{" "}
+								<span className="text nav-text">Pointage des personnels</span>
+							</Link>
+						</li>
+						<li className="nav-link">
+							<Link
 								className={activeTab === "matiere" ? "active" : ""}
 								onClick={() => {
 									handleTabClick("matiere");

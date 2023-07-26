@@ -12,6 +12,7 @@ import MatiereTable from "../tables/Matiere";
 import ClientTable from "../tables/client";
 import ProduitTable from "../tables/Produit";
 import UtilisateurTable from "../tables/utilisateurs";
+import PointageTable from "../tables/Pointage/pointage";
 
 export default function Table({
 	title,
@@ -188,6 +189,14 @@ export default function Table({
 							data={data}
 							handleEdit={handleEdit}
 							handleDelete={handleDelete}
+						/>
+					)}
+					{activeTab === "pointage" && (
+						<PointageTable
+							columns={columns}
+							data={data}
+							handleDelete={handleDelete}
+							handleEdit={handleEdit}
 						/>
 					)}
 					{activeTab === "adherent" && (
