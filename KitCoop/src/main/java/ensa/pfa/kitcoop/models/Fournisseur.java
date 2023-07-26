@@ -1,5 +1,6 @@
 package ensa.pfa.kitcoop.models;
 
+import ensa.pfa.kitcoop.models.enums.CurrentState;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,5 +65,9 @@ public class Fournisseur {
 
     @Column(name = "SITE_WEB")
     private String siteWeb;
+    @Column(name = "STATE")
+    @Enumerated(EnumType.STRING)
+    private CurrentState state;
+
 
 }

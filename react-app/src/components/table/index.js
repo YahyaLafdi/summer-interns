@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Search from "../../assets/svg/Search";
 import "./style.scss";
 import Delete from "./Delete";
+import Disable from "./Disable";
 import GetAddFormForActiveTab from "../../data/GetAddFormForActiveTab";
 import GetEditFormForActiveTab from "../../data/GetEditFormForActiveTab";
 import axios from "axios";
@@ -94,12 +95,18 @@ export default function Table({
 	}, [data]);
 
 	const [showDelete, setShowDelete] = useState(false);
+	const [showDisable, setShowDisable] = useState(false);
 	const [showAdd, setShowAdd] = useState(false);
 	const [showEdit, setShowEdit] = useState(false);
 	const [item, setItem] = useState(null);
 	const handleDelete = (item) => {
 		console.log("delete clicked");
 		setShowDelete(true);
+		setItem(item);
+	};
+	const handleDisable = (item) => {
+		console.log("disable clicked");
+		setShowDisable(true);
 		setItem(item);
 	};
 
@@ -137,6 +144,16 @@ export default function Table({
 			{showDelete && (
 				<Delete
 					visible={setShowDelete}
+					item={item}
+					setLoading={setLoading}
+					activeTab={activeTab}
+					setRefetch={setRefetch}
+					refetch={refetch}
+				/>
+			)}
+			{showDisable && (
+				<Disable
+					visible={setShowDisable}
 					item={item}
 					setLoading={setLoading}
 					activeTab={activeTab}
@@ -188,6 +205,7 @@ export default function Table({
 							data={data}
 							handleEdit={handleEdit}
 							handleDelete={handleDelete}
+							handleDisable={handleDisable}
 						/>
 					)}
 					{activeTab === "adherent" && (
@@ -196,14 +214,17 @@ export default function Table({
 							data={data}
 							handleEdit={handleEdit}
 							handleDelete={handleDelete}
+							handleDisable={handleDisable}
 						/>
 					)}
 					{activeTab === "fournisseur" && (
 						<FournisseurTable
+							
 							columns={columns}
 							data={data}
 							handleEdit={handleEdit}
 							handleDelete={handleDelete}
+							handleDisable={handleDisable}
 						/>
 					)}
 					{activeTab === "matiere" && (

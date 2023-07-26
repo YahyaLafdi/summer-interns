@@ -31,8 +31,7 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "intitule", title: "Intitulé" },
 				{ key: "famille", title: "Famille" },
 				{ key: "region", title: "Region Source" },
-				{ key: "quantite", title: "Quantité" },
-				{ key: "fournisseur", title: "Fournisseur" },
+				
 				{ key: "prix", title: "Seuil minimum" },
 			];
 		case "fournisseur":

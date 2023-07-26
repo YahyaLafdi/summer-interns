@@ -3,10 +3,12 @@ package ensa.pfa.kitcoop.controllers;
 import ensa.pfa.kitcoop.models.Adherent;
 import ensa.pfa.kitcoop.models.Fournisseur;
 import ensa.pfa.kitcoop.models.Produit;
+import ensa.pfa.kitcoop.models.enums.CurrentState;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
 import ensa.pfa.kitcoop.services.AdherentService;
 import ensa.pfa.kitcoop.services.FournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +64,14 @@ public class FournisseurController {
     @PostMapping("/api/fournisseurs/{id}")
     public ResponseEntity<APIResponse> updateFournisseur(@PathVariable("id") Long id, @RequestBody Fournisseur fournisseur){
         APIResponse apiResponse = fournisseurService.updateFournisseur(id, fournisseur);
+        return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+    }
+    @CrossOrigin(origins = "${REACT_APP_FRONTEND_URL}")
+    @PatchMapping("/api/fournisseurs/{id}/disable")
+    public ResponseEntity<APIResponse> disableFournisseur(@PathVariable("id") Long id){
+        Fournisseur temp = (Fournisseur) fournisseurService.getFournisseurById(id).getData();
+        temp.setState(CurrentState.DISABLED);
+        APIResponse apiResponse = fournisseurService.updateFournisseur(id, temp);
         return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
     }
 }
