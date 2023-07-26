@@ -185,6 +185,7 @@ useEffect(() => {
 	};
 	if(ajouOk) {
 		doAdd();
+    setAjoutOk(false);
 	}
 }, [ajouOk])
 

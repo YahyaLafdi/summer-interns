@@ -6,6 +6,9 @@ import SimpleOptionInput from "../../inputs/simpleOptionInput";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import UpdateProfilePicture from "../../profilePicture/UpdateProfilePicture";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { adherentDetails, adherentDetails2, adherentValidation1, adherentValidation2 } from "../addAdherent/utils";
+import { initialValues1 } from "../addAdherent";
 
 export default function EditAdherent({ visible, activeTab, setLoading, refetch, setRefetch, item }) {
 	const refInput = useRef(null);
@@ -139,27 +142,36 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 		const { name, value } = e.target;
 		setFormInfos({ ...formInfos, [name]: value });
 	};
-
-	const doAdd = async () => {
-		try {
-			setLoading(true);
-			console.log("start upload with this : " + image);
-			const imageUrl = await uploadImage(image);
-			console.log("end upload");
-			const updatedFields = {
-				...formInfos,
-				photoUrl: imageUrl,
-			};
-			console.log(updatedFields);
-			await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s/${item.id}`, updatedFields);
-			setLoading(false);
-			visible(false);
-			setRefetch(!refetch);
-		} catch (error) {
-			setLoading(false);
-			console.log(error);
+	const [ajoutOk, setAjoutOk] = useState(false);
+	useEffect(() => {
+		const doAdd = async () => {
+			try {
+				setLoading(true);
+				console.log("start upload with this : " + image);
+				const imageUrl = await uploadImage(image);
+				console.log("end upload");
+				const updatedFields = {
+					...formInfos,
+					photoUrl: imageUrl,
+				};
+				console.log(updatedFields);
+				await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s/${item.id}`, updatedFields);
+				setLoading(false);
+				visible(false);
+				setRefetch(!refetch);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		};
+		if(ajoutOk){
+			doAdd()
+			setAjoutOk(false)
 		}
-	};
+	}, [ajoutOk])
+	
+
+	
 	const uploadImage = async (img) => {
 		const blob = await fetch(img).then((r) => r.blob());
 		const reader = new FileReader();
@@ -183,7 +195,7 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 	};
 	useEffect(() => {
 		console.log(formInfos);
-	});
+	}, [formInfos]);
 	return (
 		<div className="blur">
 			<div className="container">
@@ -217,8 +229,99 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 									</div>
 								</div>
 							</div>
+							<Formik
+                initialValues={item}
+                validationSchema={adherentValidation1}
+              >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {adherentDetails.map((elt) => (
+                        <div className="input-field">
+                          <label>{elt.label}</label>
+                          {elt.type === "select" ? (
+<>
+                            <Field as="select" name={elt.name}>
+                              <option value="" disabled selected>
+                                {elt.placeholder}
+                              </option>
+                              {elt?.options?.map((op) => (
+                                <option value={op.key}>{op.value} </option>
+                              ))}
+                            </Field>
+							<ErrorMessage
+								name={elt.name}
+								component="div"
+								className="error"
+							/>
+</>
+                          ) : elt.name === "nombreEnfants" ? (
+                            <>
+                              <Field
+                                type={elt.type}
+                                placeholder={elt.placeholder}
+                                name={elt.name}
+                                options={elt.options}
+                                validate={elt.validate}
+                                onChange={(e) => {
+                                  //setNbEnfants(e.target.value);
+                                  const { value } = e.target;
+                                  const enfants = Array.from(
+                                    { length: value },
+                                    () => ({
+                                      nom: "",
+                                      isScolarised: false,
+                                      ddn: "",
+                                    })
+                                  );
+                                  //console.log(enfants);
+                                  props.setFieldValue("enfants", enfants);
+                                  props.handleChange(e);
+                                }}
+                              />
+                              <ErrorMessage
+                                name={elt.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={elt.type}
+                                placeholder={elt.placeholder}
+                                name={elt.name}
+                                options={elt.options}
+                                validate={elt.validate}
+                              />
+                              <ErrorMessage
+                                name={elt.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                      
+                    </div>
 
-							<div className="fields">
+                    <button
+                      disabled={!props.isValid }
+                      onClick={() =>
+                        setFormInfos((x) => ({ ...x, ...props.values }))
+                      }
+                      className="nextBtn"
+                      type="button"
+                    >
+                      <span className="btnText">Suivant</span>
+                      <i className="uil uil-navigator"></i>
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+
+							{/*<div className="fields">
 								<SimpleInput
 									placeholder="Nom"
 									type="text"
@@ -282,20 +385,147 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 									handleChange={handleChange}
 									itemValue={item.dda}
 								/>
-							</div>
+							</div>*/}
 						</div>
 
-						<button className="nextBtn" type="button">
+						{/*<button className="nextBtn" type="button">
 							<span className="btnText">Suivant</span>
 							<i className="uil uil-navigator"></i>
-						</button>
+						</button>*/}
 					</div>
 
 					<div className="form second">
 						<div className="details address">
 							<span className="title">Details Professionels</span>
 
-							<div className="fields">
+							<Formik initialValues={formInfos} validationSchema={adherentValidation2} >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {adherentDetails2.map((elt) => (
+                        <div className="input-field">
+                          <label>{elt.label}</label>
+                          {elt.type === "select" ? (
+                            <Field as="select" name={elt.name}>
+                              <option value="" disabled selected>
+                                {elt.placeholder}
+                              </option>
+                              {elt?.options?.map((op) => (
+                                <option value={op.key}>{op.value} </option>
+                              ))}
+                            </Field>
+                          ) : elt.name === "nombreEnfants" ? (
+                            <>
+                              <Field
+                                type={elt.type}
+                                placeholder={elt.placeholder}
+                                name={elt.name}
+                                options={elt.options}
+                                validate={elt.validate}
+                                onChange={(e) => {
+                                  //setNbEnfants(e.target.value);
+                                  const { value } = e.target;
+                                  const enfants = Array.from(
+                                    { length: value },
+                                    () => ({
+                                      nom: "",
+                                      isScolarised: false,
+                                      ddn: "",
+                                    })
+                                  );
+                                  //console.log(enfants);
+                                  props.setFieldValue("enfants", enfants);
+                                  props.handleChange(e);
+                                }}
+                              />
+                              <ErrorMessage
+                                name={elt.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={elt.type}
+                                placeholder={elt.placeholder}
+                                name={elt.name}
+                                options={elt.options}
+                                validate={elt.validate}
+                              />
+                              <ErrorMessage
+                                name={elt.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+					{props.values.nombreEnfants > 0 && (
+                        <div>
+                          <p className="title">Ajouter vous enfants ici</p>
+                          {props.values.enfants.map((enfant, index) => (
+                            <div className="enfants">
+                              {/*<p>Enfant N° {index + 1}</p>*/}
+                              <div className="enfant-input">
+                                <div className="enfant nom input-field">
+                                  <label htmlFor="nom">Nom de l'enfant n° {index+1} </label>
+                                  <Field
+                                    type="text"
+                                    name={`enfants[${index}].nom`}
+                                    placeholder="nom"
+                                  />								  
+                                </div>
+								<div className="ddnScol">
+                                <div className="enfant input-field">
+                                  <label htmlFor="ddn">Date de naissance</label>
+                                  <Field
+                                    type="date"
+                                    name={`enfants[${index}].ddn`}
+                                  />
+                                </div>
+                                <div className="enfant input-field scol">
+                                  <label htmlFor="isScolarised">
+                                    Scolarisé
+                                  </label>
+                                  <Field
+                                    type="checkbox"
+                                    name={`enfants[${index}].isScolarised`}
+                                  />
+                                </div>
+								</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+					  <div className="buttons">
+                      <div className="backBtn">
+                        <i className="uil uil-navigator"></i>
+                        <span className="btnText">précédent</span>
+                      </div>
+
+                      <Link
+                        className="backBtn submit"
+                        onClick={() => {
+                          if (!props.isValid ) {
+                          } else {
+                            setFormInfos((x) => ({ ...x, ...props.values }));
+                            setAjoutOk(true);
+                          }
+                        }}
+                      >
+                        <span className="btnText">Enregistrer</span>
+                        <i className="uil uil-navigator"></i>
+                      </Link>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+
+							{/*<div className="fields">
 								<SimpleInput
 									placeholder="Date de départ"
 									type="date"
@@ -331,10 +561,10 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 									handleChange={handleChange}
 									itemValue={item.nbrEnfant}
 								/>
-							</div>
+							</div>*/}
 						</div>
 
-						<div className="buttons">
+						{/*<div className="buttons">
 							<div className="backBtn">
 								<i className="uil uil-navigator"></i>
 								<span className="btnText">précédent</span>
@@ -344,7 +574,7 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 								<span className="btnText">Enregistrer</span>
 								<i className="uil uil-navigator"></i>
 							</Link>
-						</div>
+						</div>*/}
 					</div>
 				</form>
 			</div>
