@@ -4,6 +4,7 @@ import ensa.pfa.kitcoop.exception.InternalErrorException;
 import ensa.pfa.kitcoop.models.Adherent;
 import ensa.pfa.kitcoop.models.Fournisseur;
 import ensa.pfa.kitcoop.models.Produit;
+import ensa.pfa.kitcoop.models.enums.CurrentState;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
 import ensa.pfa.kitcoop.repositories.FournisseurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class FournisseurService {
         try {
             Fournisseur newFournisseur = new Fournisseur();
             fournisseurOpr(fournisseur, newFournisseur);
+            newFournisseur.setState(CurrentState.ENABLED);
             Fournisseur savedFournisseur = fournisseurRepository.save(newFournisseur);
             return new APIResponse(HttpStatus.CREATED.value(), savedFournisseur, "Ajouter avec success");
         }catch (Exception e){
@@ -111,6 +113,7 @@ public class FournisseurService {
         _fournisseur.setFax(fournisseur.getFax());
         _fournisseur.setEmail(fournisseur.getEmail());
         _fournisseur.setSiteWeb(fournisseur.getSiteWeb());
+
     }
 
 }

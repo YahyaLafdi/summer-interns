@@ -18,9 +18,9 @@ export default function EditMatiere({
 		intitule: item.intitule,
 		famille: item.famille,
 		region: item.region,
-		quantite: item.quantite,
+		
 		seuil: item.seuil,
-		nomFournisseur: item.nomFournisseur,
+		
 	};
 
 	//=============================================================
@@ -95,20 +95,7 @@ export default function EditMatiere({
 									handleChange={handleChange}
 									itemValue={item.region}
 								/>
-								<SimpleInput
-									placeholder="Quantité"
-									type="number"
-									name="quantite"
-									handleChange={handleChange}
-									itemValue={item.quantite}
-								/>
-								<SimpleOptionInput
-									placeholder="Fournisseur"
-									options={fournisseurs}
-									name="nomFournisseur"
-									handleChange={handleChange}
-									itemValue={item.nomFournisseur}
-								/>
+								
 								<SimpleInput
 									placeholder="Seuil minimum"
 									type="number"

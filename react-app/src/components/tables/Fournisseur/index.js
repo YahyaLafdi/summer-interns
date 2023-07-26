@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import RightArrow from "../../../assets/svg/RightArrow";
 import Search from "../../../assets/svg/Search";
 
-export default function FournisseurTable({ columns, data, handleEdit, handleDelete }) {
+export default function FournisseurTable({ columns, data, handleEdit, handleDelete , handleDisable }) {
 	return (
 		<table>
 			<thead>
@@ -39,6 +39,13 @@ export default function FournisseurTable({ columns, data, handleEdit, handleDele
 									src="./images/icons/trash-bin.png"
 									alt=""
 									onClick={() => handleDelete(item)}
+								/>
+								{/* disable button */}
+								<img
+									className="action-btn"
+									src="./images/icons/exit.png"
+									alt=""
+									onClick={() => handleDisable(item)}
 								/>
 							</td>
 						</tr>

@@ -20,7 +20,6 @@ export default function ProduitTable({ columns, data, handleEdit, handleDelete }
 							<td>{item.intitule}</td>
 							<td>{item.uniteMesure}</td>
 							<td>{item.prixUnitaire}</td>
-							<td>{item.quantiteStock}</td>
 							<td>{item.seuil}</td>
 							<td>{item.lieuStockage}</td>
 							<td>

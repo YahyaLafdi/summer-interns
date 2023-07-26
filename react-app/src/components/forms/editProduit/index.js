@@ -10,7 +10,6 @@ export default function EditProduit({ visible, activeTab, setLoading, refetch, s
 		intitule: item.intitule,
 		uniteMesure: item.uniteMesure,
 		prixUnitaire: item.prixUnitaire,
-		quantiteStock: item.quantiteStock,
 		seuil: item.seuil,
 		lieuStockage: item.lieuStockage,
 	};
@@ -91,13 +90,7 @@ export default function EditProduit({ visible, activeTab, setLoading, refetch, s
 									handleChange={handleChange}
 									itemValue={item.prixUnitaire}
 								/>
-								<SimpleInput
-									placeholder="Quantité en stock"
-									type="text"
-									name="quantiteStock"
-									handleChange={handleChange}
-									itemValue={item.quantiteStock}
-								/>
+								
 								<SimpleInput
 									placeholder="Seuil"
 									type="text"

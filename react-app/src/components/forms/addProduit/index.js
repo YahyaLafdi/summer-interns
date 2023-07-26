@@ -11,7 +11,6 @@ export default function AddProduit({ visible, activeTab, setLoading, refetch, se
 		intitule: "",
 		uniteMesure: "",
 		prixUnitaire: 0,
-		quantiteStock: 0,
 		seuil: 0,
 		lieuStockage: "",
 		produits: [],
@@ -67,9 +66,9 @@ export default function AddProduit({ visible, activeTab, setLoading, refetch, se
 				intitule: row[0],
 				uniteMesure: row[1].trim(),
 				prixUnitaire: parseFloat(row[2]),
-				quantiteStock: parseFloat(row[3]),
-				seuil: parseFloat(row[4]),
-				lieuStockage: row[5],
+				
+				seuil: parseFloat(row[3]),
+				lieuStockage: row[4],
 			}));
 
 			setFormInfos({ ...formInfos, produits: extractedData });
@@ -175,12 +174,7 @@ export default function AddProduit({ visible, activeTab, setLoading, refetch, se
 									name="prixUnitaire"
 									handleChange={handleChange}
 								/>
-								<SimpleInput
-									placeholder="Quantité en stock"
-									type="text"
-									name="quantiteStock"
-									handleChange={handleChange}
-								/>
+								
 								<SimpleInput placeholder="Seuil" type="text" name="seuil" handleChange={handleChange} />
 								<SimpleInput
 									placeholder="Lieu de stockage"

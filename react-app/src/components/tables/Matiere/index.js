@@ -20,8 +20,6 @@ export default function MatiereTable({ columns, data, handleEdit, handleDelete }
 							<td>{item.intitule}</td>
 							<td>{item.famille}</td>
 							<td>{item.region}</td>
-							<td>{item.quantite}</td>
-							<td>{item.nomFournisseur}</td>
 							<td>{item.seuil}</td>
 							<td>
 								{/* edit button */}

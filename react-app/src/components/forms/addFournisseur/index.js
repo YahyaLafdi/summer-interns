@@ -23,6 +23,7 @@ export default function AddFournisseur({ visible, activeTab, setLoading, refetch
 		fax: "",
 		email: "",
 		siteWeb: "",
+		state : "0"
 	};
 
 	//=============================================================
