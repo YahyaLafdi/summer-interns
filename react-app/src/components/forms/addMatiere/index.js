@@ -18,9 +18,7 @@ export default function AddMatiere({
 		intitule: "",
 		famille: "",
 		region: "",
-		quantite: 0,
 		seuil: 0,
-		nomFournisseur: "",
 	};
 
 	const getAllFournisseurs = additionalDataFournisseurs.data.data;
@@ -178,18 +176,8 @@ export default function AddMatiere({
 									name="region"
 									handleChange={handleChange}
 								/>
-								<SimpleInput
-									placeholder="Quantité"
-									type="number"
-									name="quantite"
-									handleChange={handleChange}
-								/>
-								<SimpleOptionInput
-									placeholder="Fournisseur"
-									options={fournisseurs}
-									name="nomFournisseur"
-									handleChange={handleChange}
-								/>
+								
+								
 								<SimpleInput
 									placeholder="Seuil minimum"
 									type="number"

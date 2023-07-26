@@ -47,8 +47,7 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "intitule", title: "Intitulé" },
 				{ key: "famille", title: "Famille" },
 				{ key: "region", title: "Region Source" },
-				{ key: "quantite", title: "Quantité" },
-				{ key: "fournisseur", title: "Fournisseur" },
+				
 				{ key: "prix", title: "Seuil minimum" },
 			];
 		case "fournisseur":
@@ -72,7 +71,6 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "intitule", title: "Intitulé" },
 				{ key: "Unite", title: "Unité de mesure" },
 				{ key: "prix", title: "Prix unitaire" },
-				{ key: "quantite", title: "Quantité en stock" },
 				{ key: "seuil", title: "Seuil" },
 				{ key: "lieu", title: "Lieu de stockage" },
 			];
