@@ -10,6 +10,22 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "fonction", title: "Fonction" },
 				{ key: "cin", title: "CIN" },
 			];
+		case "pointage":
+			return [
+				{key: "numBordereau", title: "N° Bordereau"},
+				{key: "codeUnitProd", title: "Unité de production"},
+				//{key: "intituleUnitProd", title: "Intitulé Unité de production"},
+				{key: "matricule", title: "Matricule"},
+				/*{key: "nom", title: "Nom"},
+				{key: "prenom", title: "Prénom"},*/
+				{key: "dateDebut", title: "Date de début"},
+				{key: "dateFin", title: "Date de fin"},
+				/*{key: "heuresNorm", title: "Heures normales"},
+				{key: "heuresSup25", title: "Heures supplémentaires 25%"},
+				{key: "heuresSup50", title: "Heures supplémentaires 50%"},
+				{key: "heuresSup100", title: "Heures supplémentaires 100%"},*/
+				{key: "total", title: "Total"}
+			];
 		case "utilisateur":
 			return [
 				{ key: "username", title: "Nom d'utilisateur" },
@@ -58,6 +74,7 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "seuil", title: "Seuil" },
 				{ key: "lieu", title: "Lieu de stockage" },
 			];
+	
 		default:
 			return [];
 	}

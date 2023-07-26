@@ -4,6 +4,7 @@ import EditClient from "../components/forms/editClient";
 import EditFournisseur from "../components/forms/editFournisseur";
 import EditMatiere from "../components/forms/editMatiere";
 import EditPersonnel from "../components/forms/editPersonnel";
+import EditPointage from "../components/forms/editPointage/editPointage";
 import EditProduit from "../components/forms/editProduit";
 
 export default function GetEditFormForActiveTab({
@@ -39,6 +40,17 @@ export default function GetEditFormForActiveTab({
 					item={item}
 				/>
 			);
+		case "pointage":
+			return (
+				<EditPointage
+					visible={visible}
+					activeTab={activeTab}
+					setRefetch={setRefetch}
+					refetch={refetch}
+					setLoading={setLoading}
+					item={item}
+				/>
+			)
 		case "fournisseur":
 			return (
 				<EditFournisseur
