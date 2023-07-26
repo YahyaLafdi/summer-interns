@@ -55,7 +55,6 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "intitule", title: "Intitulé" },
 				{ key: "Unite", title: "Unité de mesure" },
 				{ key: "prix", title: "Prix unitaire" },
-				{ key: "quantite", title: "Quantité en stock" },
 				{ key: "seuil", title: "Seuil" },
 				{ key: "lieu", title: "Lieu de stockage" },
 			];
