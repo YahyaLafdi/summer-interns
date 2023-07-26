@@ -30,6 +30,24 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 		situationFamiliale: item.situationFamiliale,
 		nbrEnfant: item.nbrEnfant,
 	};
+	const values1 = {
+		nom: item.nom,
+		prenom: item.prenom,
+		ddn: item.ddn,
+		cin: item.cin,
+		telephone: item.telephone,
+		adresse: item.adresse,
+		ville: item.ville,
+		niveauEtudes: item.niveauEtudes,
+		dda: item.dda
+	}
+	const values2 = {
+		ddd: item.ddd,
+		motif: item.motif,
+		nbrPartSociale: item.nbrPartSociale,
+		situationFamiliale: item.situationFamiliale,
+		nbrEnfant: item.nbrEnfant,
+	}
 
 	const [isDeclaredByCNSS, setIsDeclaredByCNSS] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -197,40 +215,43 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
 		console.log(formInfos);
 	}, [formInfos]);
 	return (
-		<div className="blur">
-			<div className="container">
-				<i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
-				<header>Modifier un personnel</header>
+    <div className="blur">
+      <div className="container">
+        <i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
+        <header>Modifier un personnel</header>
 
-				<form action="#">
-					<input
-						type="file"
-						ref={refInput}
-						onChange={handleImage}
-						accept="image/jpeg,image/png,image/webp,image/gif"
-						hidden
-					/>
-					<div className="form first">
-						<div className="details personal">
-							<span className="title">Détails Personnels</span>
-							<div className="profile_img_wrap">
-								<div className="profile_w_left">
-									<div className="profile_w_img">
-										<div
-											className="profile_w_bg"
-											style={{
-												backgroundSize: "cover",
-												backgroundImage: `url(${image})`,
-											}}
-										></div>
-										<div className="profile_circle hover1" onClick={() => uploadComp()}>
-											<img src="./images/icons/camera.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
-							<Formik
-                initialValues={item}
+        <form action="#">
+          <input
+            type="file"
+            ref={refInput}
+            onChange={handleImage}
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+          />
+          <div className="form first">
+            <div className="details personal">
+              <span className="title">Détails Personnels</span>
+              <div className="profile_img_wrap">
+                <div className="profile_w_left">
+                  <div className="profile_w_img">
+                    <div
+                      className="profile_w_bg"
+                      style={{
+                        backgroundSize: "cover",
+                        backgroundImage: `url(${image})`,
+                      }}
+                    ></div>
+                    <div
+                      className="profile_circle hover1"
+                      onClick={() => uploadComp()}
+                    >
+                      <img src="./images/icons/camera.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <Formik
+                initialValues={values1}
                 validationSchema={adherentValidation1}
               >
                 {(props) => (
@@ -240,21 +261,21 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                         <div className="input-field">
                           <label>{elt.label}</label>
                           {elt.type === "select" ? (
-<>
-                            <Field as="select" name={elt.name}>
-                              <option value="" disabled selected>
-                                {elt.placeholder}
-                              </option>
-                              {elt?.options?.map((op) => (
-                                <option value={op.key}>{op.value} </option>
-                              ))}
-                            </Field>
-							<ErrorMessage
-								name={elt.name}
-								component="div"
-								className="error"
-							/>
-</>
+                            <>
+                              <Field as="select" name={elt.name}>
+                                <option value="" disabled selected>
+                                  {elt.placeholder}
+                                </option>
+                                {elt?.options?.map((op) => (
+                                  <option value={op.key}>{op.value} </option>
+                                ))}
+                              </Field>
+                              <ErrorMessage
+                                name={elt.name}
+                                component="div"
+                                className="error"
+                              />
+                            </>
                           ) : elt.name === "nombreEnfants" ? (
                             <>
                               <Field
@@ -303,11 +324,10 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                           )}
                         </div>
                       ))}
-                      
                     </div>
 
                     <button
-                      disabled={!props.isValid }
+                      disabled={!props.isValid}
                       onClick={() =>
                         setFormInfos((x) => ({ ...x, ...props.values }))
                       }
@@ -320,85 +340,17 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                   </Form>
                 )}
               </Formik>
+            </div>
+          </div>
 
-							{/*<div className="fields">
-								<SimpleInput
-									placeholder="Nom"
-									type="text"
-									name="nom"
-									handleChange={handleChange}
-									itemValue={item.nom}
-								/>
-								<SimpleInput
-									placeholder="Prénom"
-									type="text"
-									name="prenom"
-									handleChange={handleChange}
-									itemValue={item.prenom}
-								/>
-								<SimpleInput
-									placeholder="Date de naissance"
-									type="date"
-									name="ddn"
-									handleChange={handleChange}
-									itemValue={item.ddn}
-								/>
-								<SimpleInput
-									placeholder="CIN"
-									type="text"
-									name="cin"
-									handleChange={handleChange}
-									itemValue={item.cin}
-								/>
-								<SimpleInput
-									placeholder="Téléphone"
-									type="text"
-									name="telephone"
-									handleChange={handleChange}
-									itemValue={item.telephone}
-								/>
-								<SimpleInput
-									placeholder="Adresse"
-									type="text"
-									name="adresse"
-									handleChange={handleChange}
-									itemValue={item.adresse}
-								/>
-								<SimpleInput
-									placeholder="Ville"
-									type="text"
-									name="ville"
-									handleChange={handleChange}
-									itemValue={item.ville}
-								/>
-								<SimpleOptionInput
-									placeholder="Niveau d'études"
-									options={niveau_etudes}
-									name="niveauEtudes"
-									handleChange={handleChange}
-									itemValue={item.niveauEtudes}
-								/>
-								<SimpleInput
-									placeholder="Date d'adhésion"
-									type="date"
-									name="dda"
-									handleChange={handleChange}
-									itemValue={item.dda}
-								/>
-							</div>*/}
-						</div>
+          <div className="form second">
+            <div className="details address">
+              <span className="title">Details Professionels</span>
 
-						{/*<button className="nextBtn" type="button">
-							<span className="btnText">Suivant</span>
-							<i className="uil uil-navigator"></i>
-						</button>*/}
-					</div>
-
-					<div className="form second">
-						<div className="details address">
-							<span className="title">Details Professionels</span>
-
-							<Formik initialValues={formInfos} validationSchema={adherentValidation2} >
+              <Formik
+                initialValues={values2}
+                validationSchema={adherentValidation2}
+              >
                 {(props) => (
                   <Form>
                     <div className="fields">
@@ -463,22 +415,24 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                         </div>
                       ))}
                     </div>
-					{props.values.nombreEnfants > 0 && (
-                        <div>
-                          <p className="title">Ajouter vous enfants ici</p>
-                          {props.values.enfants.map((enfant, index) => (
-                            <div className="enfants">
-                              {/*<p>Enfant N° {index + 1}</p>*/}
-                              <div className="enfant-input">
-                                <div className="enfant nom input-field">
-                                  <label htmlFor="nom">Nom de l'enfant n° {index+1} </label>
-                                  <Field
-                                    type="text"
-                                    name={`enfants[${index}].nom`}
-                                    placeholder="nom"
-                                  />								  
-                                </div>
-								<div className="ddnScol">
+                    {props.values.nombreEnfants > 0 && (
+                      <div>
+                        <p className="title">Ajouter vous enfants ici</p>
+                        {props.values.enfants.map((enfant, index) => (
+                          <div className="enfants">
+                            {/*<p>Enfant N° {index + 1}</p>*/}
+                            <div className="enfant-input">
+                              <div className="enfant nom input-field">
+                                <label htmlFor="nom">
+                                  Nom de l'enfant n° {index + 1}{" "}
+                                </label>
+                                <Field
+                                  type="text"
+                                  name={`enfants[${index}].nom`}
+                                  placeholder="nom"
+                                />
+                              </div>
+                              <div className="ddnScol">
                                 <div className="enfant input-field">
                                   <label htmlFor="ddn">Date de naissance</label>
                                   <Field
@@ -495,13 +449,13 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                                     name={`enfants[${index}].isScolarised`}
                                   />
                                 </div>
-								</div>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      )}
-					  <div className="buttons">
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <div className="buttons">
                       <div className="backBtn">
                         <i className="uil uil-navigator"></i>
                         <span className="btnText">précédent</span>
@@ -510,7 +464,7 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                       <Link
                         className="backBtn submit"
                         onClick={() => {
-                          if (!props.isValid ) {
+                          if (!props.isValid) {
                           } else {
                             setFormInfos((x) => ({ ...x, ...props.values }));
                             setAjoutOk(true);
@@ -524,73 +478,23 @@ export default function EditAdherent({ visible, activeTab, setLoading, refetch, 
                   </Form>
                 )}
               </Formik>
-
-							{/*<div className="fields">
-								<SimpleInput
-									placeholder="Date de départ"
-									type="date"
-									name="ddd"
-									handleChange={handleChange}
-									itemValue={item.ddd}
-								/>
-								<SimpleInput
-									placeholder="Motifs de depart"
-									type="text"
-									name="motif"
-									handleChange={handleChange}
-									itemValue={item.motif}
-								/>
-								<SimpleInput
-									placeholder="Nombre de parts sociales"
-									type="text"
-									name="nbrPartSociale"
-									handleChange={handleChange}
-									itemValue={item.nbrPartSociale}
-								/>
-								<SimpleOptionInput
-									placeholder="Situation familiale"
-									options={situation_familiale}
-									name="situationFamiliale"
-									handleChange={handleChange}
-									itemValue={item.situationFamiliale}
-								/>
-								<SimpleInput
-									placeholder="Nombre d'enfants"
-									type="number"
-									name="nombreEnfants"
-									handleChange={handleChange}
-									itemValue={item.nbrEnfant}
-								/>
-							</div>*/}
-						</div>
-
-						{/*<div className="buttons">
-							<div className="backBtn">
-								<i className="uil uil-navigator"></i>
-								<span className="btnText">précédent</span>
-							</div>
-
-							<Link className="backBtn submit" onClick={doAdd}>
-								<span className="btnText">Enregistrer</span>
-								<i className="uil uil-navigator"></i>
-							</Link>
-						</div>*/}
-					</div>
-				</form>
-			</div>
-			{show && (
-				<UpdateProfilePicture
-					setZoom={setZoom}
-					crop={crop}
-					setCrop={setCrop}
-					zoom={zoom}
-					getCroppedImage={getCroppedImage}
-					onCropComplete={onCropComplete}
-					setImage={setImage}
-					image={image}
-					setShow={setShow}
-				/>
-			)}
-		</div>
-	);
+            </div>
+          </div>
+        </form>
+      </div>
+      {show && (
+        <UpdateProfilePicture
+          setZoom={setZoom}
+          crop={crop}
+          setCrop={setCrop}
+          zoom={zoom}
+          getCroppedImage={getCroppedImage}
+          onCropComplete={onCropComplete}
+          setImage={setImage}
+          image={image}
+          setShow={setShow}
+        />
+      )}
+    </div>
+  );
 }

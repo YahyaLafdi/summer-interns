@@ -444,6 +444,7 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
                         <div className="input-field">
                           <label>{item.label}</label>
                           {item.type === "select" ? (
+                            <>
                             <Field as="select" name={item.name}>
                               <option value="" disabled selected>
                                 {item.placeholder}
@@ -452,6 +453,12 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
                                 <option value={op.key}>{op.value} </option>
                               ))}
                             </Field>
+                            <ErrorMessage
+                                name={item.name}
+                                component="div"
+                                className="error"
+                            />
+                            </>
                           ) : item.name === "nombreEnfants" ? (
                             <>
                               <Field

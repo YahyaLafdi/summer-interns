@@ -29,7 +29,7 @@ export const emailValidation = Yup.string().matches(emailRegEx, "Email invalid")
 export const phoneValidation = Yup.string().required("Obligatoire").matches(phoneRegEx, "Numéro téléphone invalid")
 export const cinValidation = Yup.string().required("Obligatoire").max(10,"10 caractères au maximum")
 export const nomValidation = Yup.string().required("Obligatoire").max(30,"30 caractères au maximum");
-export const nombreValidation = Yup.number("Seulement nombre acceptable")
+export const nombreValidation = Yup.number().min(0, "Positif ou nul")
 
 
 export const addPersSchema = Yup.object().shape({

@@ -26,10 +26,10 @@ export const adherentValidation2 = Yup.object().shape({
     //basePaiement:requiredValidation,
    // tauxPaiement:requiredValidation,
     //isDeclareCnss:requiredValidation,
-    nombreEnfants: requiredValidation,
+    nombreEnfants: nombreValidation,
     //cnss:requiredValidation,
     //isAdherent:requiredValidation,
-    //dateDepart:requiredValidation,
+    ddd:pastDateValidation,
     //renseignements:requiredValidation,
 })
 export const adherentDetails = [

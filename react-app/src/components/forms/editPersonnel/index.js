@@ -127,33 +127,34 @@ export default function EditPersonnel({ visible, activeTab, setLoading, refetch,
 		refInput.current.click();
 	};
 
-	const sexe = [
-		{ key: "Féminine", value: "Féminine" },
-		{ key: "Masculine", value: "Masculine" },
-	];
-	const oui_non = [
-		{ key: "true", value: "Oui" },
-		{ key: "false", value: "Non" },
-	];
-	const situation_familiale = [
-		{ key: "Marié(e)", value: "Marié(e)" },
-		{ key: "Célébataire", value: "Célébataire" },
-		{ key: "Divorcé(e)", value: "Divorcé(e)" },
-		{ key: "Veuf(ve)", value: "Veuf(ve)" },
-	];
-	const niveau_etudes = [
-		{ key: "Sans niveau", value: "Sans niveau" },
-		{ key: "Primaire", value: "Primaire" },
-		{ key: "Secondaire", value: "Secondaire" },
-		{ key: "Lycée", value: "Lycée" },
-		{ key: "Supérieur", value: "Supérieur" },
-	];
-	const Base_de_paiement = [
-		{ key: "Horaire", value: "Horaire" },
-		{ key: "Hebdomadaire", value: "Hebdomadaire" },
-		{ key: "Quinzaine", value: "Quinzaine" },
-		{ key: "mensuelle", value: "mensuelle" },
-	];
+	const values1 = {
+    matricule: item.matricule,
+    nom: item.nom,
+    prenom: item.prenom,
+    sexe: item.sexe,
+    situationFamiliale: item.situationFamiliale,
+    cin: item.cin,
+    adresse: item.adresse,
+    ville: item.ville,
+    ddn: item.ddn,
+    telephone: item.telephone,
+    nombreEnfants: item.nombreEnfants
+  }
+  const values2 = {
+    niveauEtudes: item.niveauEtudes,
+    fonction: item.fonction,
+    dateEmbauche: item.dateEmbauche,
+    basePaiement: item.basePaiement,
+    tauxPaiement: item.tauxPaiement,
+    isDeclareCnss: item.isDeclareCnss,
+    cnss: item.cnss,
+    isAdherent: item.isAdherent,
+    nbrPartSociale: item.nbrPartSociale,
+    dateDepart: item.dateDepart,
+    ddd: item.ddd,
+    motif: item.motif,
+    renseignement: item.renseignement
+  }
 
 	const [formInfos, setFormInfos] = useState(fields);
 
@@ -161,7 +162,7 @@ export default function EditPersonnel({ visible, activeTab, setLoading, refetch,
 		const { name, value } = e.target;
 		setFormInfos({ ...formInfos, [name]: value });
 	};
-	const [ajouOk, setAjoutOk] = useState(false);
+	const [ajoutOk, setAjoutOk] = useState(false);
 useEffect(() => {
 	const doAdd = async () => {
 		try {
@@ -183,11 +184,11 @@ useEffect(() => {
 			console.log(error);
 		}
 	};
-	if(ajouOk) {
+	if(ajoutOk) {
 		doAdd();
     setAjoutOk(false);
 	}
-}, [ajouOk])
+}, [ajoutOk])
 
 	
 	const uploadImage = async (img) => {
@@ -213,7 +214,7 @@ useEffect(() => {
 	};
 	useEffect(() => {
 		console.log(formInfos);
-	});
+	}, [formInfos]);
 	return (
     <div className="blur">
       <div className="container">
@@ -251,7 +252,7 @@ useEffect(() => {
                 </div>
               </div>
 
-              <Formik initialValues={item} validationSchema={updatePersSchema}>
+              <Formik initialValues={values1} validationSchema={updatePersSchema}>
                 {(props) => (
                   <Form>
                     <div className="fields">
@@ -336,7 +337,7 @@ useEffect(() => {
             <div className="details address">
               <span className="title">Details Professionels</span>
 			  <Formik
-                initialValues={item}
+                initialValues={values2}
                 validationSchema={updateProfessionalSchema}
                 onSubmit={(values) => {
                   console.log(values);
