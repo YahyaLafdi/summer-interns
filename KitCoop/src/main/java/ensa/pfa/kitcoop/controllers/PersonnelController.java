@@ -1,9 +1,11 @@
 package ensa.pfa.kitcoop.controllers;
 
+import ensa.pfa.kitcoop.models.Adherent;
 import ensa.pfa.kitcoop.models.Client;
 import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.payload.requests.LoginRequest;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
+import ensa.pfa.kitcoop.services.AdherentService;
 import ensa.pfa.kitcoop.services.AuthService;
 import ensa.pfa.kitcoop.services.PersonnelService;
 import jakarta.validation.Valid;
@@ -18,10 +20,12 @@ import java.util.List;
 @Controller
 public class PersonnelController {
     private final PersonnelService personnelService;
+    private final AdherentService adherentService;
 
     @Autowired
-    public PersonnelController(PersonnelService personnelService){
+    public PersonnelController(PersonnelService personnelService, AdherentService adherentService){
         this.personnelService = personnelService;
+        this.adherentService = adherentService;
     }
 
     @CrossOrigin(origins = "${REACT_APP_FRONTEND_URL}")

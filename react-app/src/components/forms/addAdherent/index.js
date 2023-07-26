@@ -7,7 +7,27 @@ import SimpleOptionInput from "../../inputs/simpleOptionInput";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
-
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { adherentDetails, adherentDetails2, adherentValidation1, adherentValidation2 } from "./utils";
+export const initialValues1 = {
+  nom:"",
+  prenom:"",
+  ddn:"",
+  cin:"",
+  adresse:"",
+  niveauEtudes:"",
+  ville:"",
+  telephone:"",
+  
+}
+export const initialValues2 = {
+  situationFamiliale:"",
+  nbrPartSociale:0,
+  motif:"",
+  ddd:"",
+  nombreEnfants:0,
+  enfants:[]
+}
 export default function AddAdherent({ visible, activeTab, setLoading, refetch, setRefetch }) {
 	const refInput = useRef(null);
 	const [image, setImage] = useState(
@@ -28,9 +48,10 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
 		motif: "",
 		nbrPartSociale: "",
 		situationFamiliale: "",
-		nbrEnfant: "",
+		nombreEnfants: 0,
+		enfants: []
 	};
-
+	
 	//=============================================================
 
 	const [error, setError] = useState("");
@@ -109,20 +130,6 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
 		refInput.current.click();
 	};
 
-	const situation_familiale = [
-		{ key: "Marié(e)", value: "Marié(e)" },
-		{ key: "Célébataire", value: "Célébataire" },
-		{ key: "Divorcé(e)", value: "Divorcé(e)" },
-		{ key: "Veuf(ve)", value: "Veuf(ve)" },
-	];
-	const niveau_etudes = [
-		{ key: "Sans niveau", value: "Sans niveau" },
-		{ key: "Primaire", value: "Primaire" },
-		{ key: "Secondaire", value: "Secondaire" },
-		{ key: "Lycée", value: "Lycée" },
-		{ key: "Supérieur", value: "Supérieur" },
-	];
-
 	const [formInfos, setFormInfos] = useState(fields);
 
 	const handleChange = (e) => {
@@ -134,26 +141,37 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
 		console.log(formInfos);
 	});
 
-	const doAdd = async () => {
-		try {
-			setLoading(true);
-			console.log("start upload with this : " + image);
-			const imageUrl = await uploadImage(image);
-			console.log("end upload");
-			const updatedFields = {
-				...formInfos,
-				photoUrl: imageUrl,
-			};
-			console.log(updatedFields);
-			await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s`, updatedFields);
-			setLoading(false);
-			visible(false);
-			setRefetch(!refetch);
-		} catch (error) {
-			setLoading(false);
-			console.log(error);
+	const [ajoutOk, setAjoutOk] = useState(false);
+
+	useEffect(() => {
+		const doAdd = async () => {
+			console.log(formInfos);
+			try {
+				setLoading(true);
+				console.log("start upload with this : " + image);
+				const imageUrl = await uploadImage(image);
+				console.log("end upload");
+				const updatedFields = {
+					...formInfos,
+					photoUrl: imageUrl,
+				};
+				console.log(updatedFields);
+				await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s`, updatedFields);
+				setLoading(false);
+				visible(false);
+				setRefetch(!refetch);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		};
+		if(ajoutOk){
+			doAdd()
+			setAjoutOk(false);
 		}
-	};
+	}, [ajoutOk])
+	
+	
 	const uploadImage = async (img) => {
 		const blob = await fetch(img).then((r) => r.blob());
 		const reader = new FileReader();
@@ -270,150 +288,316 @@ export default function AddAdherent({ visible, activeTab, setLoading, refetch, s
 	};
 
 	return (
-		<div className="blur">
-			<div className="container">
-				<i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
-				<header>Ajouter un adhérent</header>
+    <div className="blur">
+      <div className="container">
+        <i className="fa-solid fa-xmark" onClick={() => visible(false)}></i>
+        <header>Ajouter un adhérent</header>
 
-				<form action="#">
-					<input
-						type="file"
-						ref={refInput}
-						onChange={handleImage}
-						accept="image/jpeg,image/png,image/webp,image/gif"
-						hidden
-					/>
-					<div className="form first">
-						<div className="details personal">
-							<span className="title">Détails Adhérent</span>
+        <form action="#">
+          <input
+            type="file"
+            ref={refInput}
+            onChange={handleImage}
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+          />
+          <div className="form first">
+            <div className="details personal">
+              <span className="title">Détails Adhérent</span>
 
-							<div className="profile_img_wrap">
-								<div className="profile_w_left">
-									<div className="profile_w_img">
-										<div
-											className="profile_w_bg"
-											style={{
-												backgroundSize: "cover",
-												backgroundImage: `url(${image})`,
-											}}
-										></div>
-										<div className="profile_circle hover1" onClick={() => uploadComp()}>
-											<img src="./images/icons/camera.png" alt="" />
-										</div>
-									</div>
+              <div className="profile_img_wrap">
+                <div className="profile_w_left">
+                  <div className="profile_w_img">
+                    <div
+                      className="profile_w_bg"
+                      style={{
+                        backgroundSize: "cover",
+                        backgroundImage: `url(${image})`,
+                      }}
+                    ></div>
+                    <div
+                      className="profile_circle hover1"
+                      onClick={() => uploadComp()}
+                    >
+                      <img src="./images/icons/camera.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="drag-area">
+                <span className="uploadHeader">
+                  Extraire les donneés á partir d'un fichier Excel
+                </span>
+                <span>OU</span>
+                <Link className="uploadBtn">Parcourir</Link>
+                <input
+                  hidden
+                  type="file"
+                  id="fileInput"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileChange}
+                />
+              </div>
+
+              <Formik
+                initialValues={initialValues1}
+                validationSchema={adherentValidation1}
+              >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {adherentDetails.map((item) => (
+                        <div className="input-field">
+                          <label>{item.label}</label>
+                          {item.type === "select" ? (
+<>
+                            <Field as="select" name={item.name}>
+                              <option value="" disabled selected>
+                                {item.placeholder}
+                              </option>
+                              {item?.options?.map((op) => (
+                                <option value={op.key}>{op.value} </option>
+                              ))}
+                            </Field>
+							<ErrorMessage
+								name={item.name}
+								component="div"
+								className="error"
+							/>
+</>
+                          ) : item.name === "nombreEnfants" ? (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                                onChange={(e) => {
+                                  //setNbEnfants(e.target.value);
+                                  const { value } = e.target;
+                                  const enfants = Array.from(
+                                    { length: value },
+                                    () => ({
+                                      nom: "",
+                                      isScolarised: false,
+                                      ddn: "",
+                                    })
+                                  );
+                                  //console.log(enfants);
+                                  props.setFieldValue("enfants", enfants);
+                                  props.handleChange(e);
+                                }}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                      
+                    </div>
+
+                    <button
+                      disabled={!props.isValid || !props.touched.nom}
+                      onClick={() =>
+                        setFormInfos((x) => ({ ...x, ...props.values }))
+                      }
+                      className="nextBtn"
+                      type="button"
+                    >
+                      <span className="btnText">Suivant</span>
+                      <i className="uil uil-navigator"></i>
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+
+          <div className="form second">
+            <div className="details address">
+              <span className="title">Détails Adhérent</span>
+              <Formik initialValues={initialValues2} validationSchema={adherentValidation2} >
+                {(props) => (
+                  <Form>
+                    <div className="fields">
+                      {adherentDetails2.map((item) => (
+                        <div className="input-field">
+                          <label>{item.label}</label>
+                          {item.type === "select" ? (
+                            <>
+                            <Field as="select" name={item.name}>
+                              <option value="" disabled selected>
+                                {item.placeholder}
+                              </option>
+                              {item?.options?.map((op) => (
+                                <option value={op.key}>{op.value} </option>
+                              ))}
+                            </Field>
+                            <ErrorMessage
+                                name={item.name}
+                                component="div"
+                                className="error"
+                            />
+                            </>
+                          ) : item.name === "nombreEnfants" ? (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                                onChange={(e) => {
+                                  //setNbEnfants(e.target.value);
+                                  const { value } = e.target;
+                                  const enfants = Array.from(
+                                    { length: value },
+                                    () => ({
+                                      nom: "",
+                                      isScolarised: false,
+                                      ddn: "",
+                                    })
+                                  );
+                                  //console.log(enfants);
+                                  props.setFieldValue("enfants", enfants);
+                                  props.handleChange(e);
+                                }}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Field
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                name={item.name}
+                                options={item.options}
+                                validate={item.validate}
+                              />
+                              <ErrorMessage
+                                name={item.name}
+                                className="error"
+                                component="div"
+                              />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+					{props.values.nombreEnfants > 0 && (
+                        <div>
+                          <p className="title">Ajouter vous enfants ici</p>
+                          {props.values.enfants.map((enfant, index) => (
+                            <div className="enfants">
+                              {/*<p>Enfant N° {index + 1}</p>*/}
+                              <div className="enfant-input">
+                                <div className="enfant nom input-field">
+                                  <label htmlFor="nom">Nom de l'enfant n° {index+1} </label>
+                                  <Field
+                                    type="text"
+                                    name={`enfants[${index}].nom`}
+                                    placeholder="nom"
+                                  />								  
+                                </div>
+								<div className="ddnScol">
+                                <div className="enfant input-field">
+                                  <label htmlFor="ddn">Date de naissance</label>
+                                  <Field
+                                    type="date"
+                                    name={`enfants[${index}].ddn`}
+                                  />
+                                </div>
+                                <div className="enfant input-field scol">
+                                  <label htmlFor="isScolarised">
+                                    Scolarisé
+                                  </label>
+                                  <Field
+                                    type="checkbox"
+                                    name={`enfants[${index}].isScolarised`}
+                                  />
+                                </div>
 								</div>
-							</div>
-							<div className="drag-area">
-								<span className="uploadHeader">Extraire les donneés á partir d'un fichier Excel</span>
-								<span>OU</span>
-								<Link className="uploadBtn">Parcourir</Link>
-								<input hidden type="file" id="fileInput" accept=".xlsx, .xls" onChange={handleFileChange} />
-							</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+					  <div className="buttons">
+                      <div className="backBtn">
+                        <i className="uil uil-navigator"></i>
+                        <span className="btnText">précédent</span>
+                      </div>
 
-							<div className="fields">
-								<SimpleInput placeholder="Nom" type="text" name="nom" handleChange={handleChange} />
-								<SimpleInput placeholder="Prénom" type="text" name="prenom" handleChange={handleChange} />
-								<SimpleInput
-									placeholder="Date de naissance"
-									type="date"
-									name="ddn"
-									handleChange={handleChange}
-								/>
-								<SimpleInput placeholder="CIN" type="text" name="cin" handleChange={handleChange} />
-								<SimpleInput
-									placeholder="Téléphone"
-									type="text"
-									name="telephone"
-									handleChange={handleChange}
-								/>
-								<SimpleInput placeholder="Adresse" type="text" name="adresse" handleChange={handleChange} />
-								<SimpleInput placeholder="Ville" type="text" name="ville" handleChange={handleChange} />
-								<SimpleOptionInput
-									placeholder="Niveau d'études"
-									options={niveau_etudes}
-									name="niveauEtudes"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Date d'adhésion"
-									type="date"
-									name="dda"
-									handleChange={handleChange}
-								/>
-							</div>
-						</div>
+                      <Link
+                        className="backBtn submit"
+                        onClick={() => {
+                          if (!props.isValid ) {
+                          } else {
+                            setFormInfos((x) => ({ ...x, ...props.values }));
+                            setAjoutOk(true);
+                          }
+                        }}
+                      >
+                        <span className="btnText">Enregistrer</span>
+                        <i className="uil uil-navigator"></i>
+                      </Link>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
 
-						<button className="nextBtn" type="button">
-							<span className="btnText">Suivant</span>
-							<i className="uil uil-navigator"></i>
-						</button>
-					</div>
+            {/*<div className="buttons">
+              <div className="backBtn">
+                <i className="uil uil-navigator"></i>
+                <span className="btnText">précédent</span>
+              </div>
 
-					<div className="form second">
-						<div className="details address">
-							<span className="title">Détails Adhérent</span>
-
-							<div className="fields">
-								<SimpleInput
-									placeholder="Date de départ"
-									type="date"
-									name="ddd"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Motifs de depart"
-									type="text"
-									name="motif"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Nombre de parts sociales"
-									type="text"
-									name="nbrPartSociale"
-									handleChange={handleChange}
-								/>
-								<SimpleOptionInput
-									placeholder="Situation familiale"
-									options={situation_familiale}
-									name="situationFamiliale"
-									handleChange={handleChange}
-								/>
-								<SimpleInput
-									placeholder="Nombre d'enfants"
-									type="number"
-									name="nombreEnfants"
-									handleChange={handleChange}
-								/>
-							</div>
-						</div>
-
-						<div className="buttons">
-							<div className="backBtn">
-								<i className="uil uil-navigator"></i>
-								<span className="btnText">précédent</span>
-							</div>
-
-							<Link className="backBtn submit" onClick={doAdd}>
-								<i className="uil uil-navigator"></i>
-								<span className="btnText">Enregistrer</span>
-							</Link>
-						</div>
-					</div>
-				</form>
-			</div>
-			{show && (
-				<UpdateProfilePicture
-					setZoom={setZoom}
-					crop={crop}
-					setCrop={setCrop}
-					zoom={zoom}
-					getCroppedImage={getCroppedImage}
-					onCropComplete={onCropComplete}
-					setImage={setImage}
-					image={image}
-					setShow={setShow}
-				/>
-			)}
-		</div>
-	);
+              <Link className="backBtn submit" onClick={doAdd}>
+                <i className="uil uil-navigator"></i>
+                <span className="btnText">Enregistrer</span>
+              </Link>
+            </div>*/}
+          </div>
+        </form>
+      </div>
+      {show && (
+        <UpdateProfilePicture
+          setZoom={setZoom}
+          crop={crop}
+          setCrop={setCrop}
+          zoom={zoom}
+          getCroppedImage={getCroppedImage}
+          onCropComplete={onCropComplete}
+          setImage={setImage}
+          image={image}
+          setShow={setShow}
+        />
+      )}
+    </div>
+  );
 }

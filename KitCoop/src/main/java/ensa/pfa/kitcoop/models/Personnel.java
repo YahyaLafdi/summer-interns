@@ -1,23 +1,23 @@
 package ensa.pfa.kitcoop.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ensa.pfa.kitcoop.models.enums.BasePaiement;
 import ensa.pfa.kitcoop.models.enums.NiveauEtudes;
 import ensa.pfa.kitcoop.models.enums.Sexe;
 import ensa.pfa.kitcoop.models.enums.SituationFamiliale;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-
 @Entity
 @Table(name = "PERSONNEL")
 public class Personnel {
@@ -52,6 +52,17 @@ public class Personnel {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "DATE_NAISSANCE")
     private Date ddn;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "ADHESION_DATE")
+    private Date dda;
+
+    @Column(name = "MOTIF")
+    private String motif;
+
+    @Column(name = "NB_PARTS_SOCIALES")
+    private int nbrPartSociale;
+
 
     @Column(name = "FONCTION")
     private String fonction;
@@ -99,4 +110,10 @@ public class Personnel {
     private String renseignements;
 
 
+    @OneToMany(mappedBy = "parent",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    //@JsonIgnore
+    @JsonManagedReference
+    private List<Enfant> enfants;
 }

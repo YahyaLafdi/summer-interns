@@ -157,7 +157,7 @@ form.secActive .form.first {
 }
 .container form .fields {
 	display: flex;
-	align-items: center;
+	align-items: start;
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
@@ -408,4 +408,27 @@ input[disabled] {
 
 .profile_circle img {
 	width: 80%;
+}
+
+.enfant-input{
+	display: flex;
+	width: 100%;
+	gap:14px;
+}
+.enfant{
+	display: flex;
+	flex-direction: column;
+}
+.enfant-input .nom{
+	flex-grow: 2;
+}
+.enfant-input .ddnScol{
+	flex:1;
+	display: flex;
+	width: 1/2;
+	justify-self: end;
+}
+.enfant-input .ddnScol .scol {
+	align-self: end;
+	//justify-self: end;
 }
