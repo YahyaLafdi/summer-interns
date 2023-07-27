@@ -179,7 +179,7 @@ export default function AddComposition({
 							<SimpleInput
 									placeholder="Produit"
 									type="text"
-									name="nomproduit"
+									name="nomProduit"
 									handleChange={handleChange}
 								/>								
 								<SimpleOptionInput
