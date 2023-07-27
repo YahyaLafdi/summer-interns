@@ -27,8 +27,8 @@ public class NotificationScheduler {
 
 
 
-    /*@GetMapping // Expose a GET endpoint to retrieve the notifications
+    @GetMapping // Expose a GET endpoint to retrieve the notifications
     public List<String> getNotifications() {
         return notificationService.checkSeuilAndSendNotification();
-    }*/
+    }
 }

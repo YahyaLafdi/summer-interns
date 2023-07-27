@@ -22,7 +22,7 @@ public class NotificationService {
         this.matiereRepository=matiereRepository;
     }
 
-    /*public List<String> checkSeuilAndSendNotification(){
+    public List<String> checkSeuilAndSendNotification(){
         List<String> messages = new ArrayList<>();
         List<Produit> produits = produitRepository.findAll();
         List<Matiere> matieres = matiereRepository.findAll();
@@ -45,5 +45,5 @@ public class NotificationService {
             }
         }
         return messages;
-    }*/
+    }
 }

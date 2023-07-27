@@ -97,7 +97,7 @@ public class ProduitService {
         _produit.setLieuStockage(produit.getLieuStockage());
         _produit.setPrixUnitaire(produit.getPrixUnitaire());
         _produit.setSeuil(produit.getSeuil());
-        //_produit.setQuantiteStock(produit.getQuantiteStock());
+        _produit.setQuantiteStock(produit.getQuantiteStock());
         _produit.setUniteMesure(produit.getUniteMesure());
 
     }
