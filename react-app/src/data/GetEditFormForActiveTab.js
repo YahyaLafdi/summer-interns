@@ -75,6 +75,18 @@ export default function GetEditFormForActiveTab({
 					additionalDataFournisseurs={additionalDataFournisseurs}
 				/>
 			);
+			case "Composition":
+			return (
+				<EditMatiere
+					visible={visible}
+					activeTab={activeTab}
+					setRefetch={setRefetch}
+					refetch={refetch}
+					setLoading={setLoading}
+					item={item}
+					additionalDataFournisseurs={additionalDataFournisseurs}
+				/>
+			);
 		case "client":
 			return (
 				<EditClient

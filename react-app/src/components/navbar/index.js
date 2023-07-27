@@ -126,6 +126,17 @@ export default function NavBar({ isAdmin, activeTab, setVisible, setActiveTab, s
 								<span className="text nav-text">Gestion Produits</span>
 							</Link>
 						</li>
+						<li className="nav-link">
+							<Link
+								className={activeTab === "composition" ? "active" : ""}
+								onClick={() => {
+									handleTabClick("composition");
+								}}
+							>
+								<img src="./images/icons/package.png" alt="" />{" "}
+								<span className="text nav-text">Composition Produits</span>
+							</Link>
+						</li>
 						<div className="miniHeader">
 							<span>Operations</span>
 						</div>
