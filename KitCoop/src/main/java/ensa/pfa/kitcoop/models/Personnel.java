@@ -26,7 +26,7 @@ public class Personnel {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "MATRICULE")
+    @Column(name = "MATRICULE", unique = true)
     private String matricule;
 
     @Column(name = "ADHERENT")

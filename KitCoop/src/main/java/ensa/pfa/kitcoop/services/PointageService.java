@@ -1,17 +1,16 @@
 package ensa.pfa.kitcoop.services;
 
+import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.models.Pointage;
-import ensa.pfa.kitcoop.models.UniteProd;
+import ensa.pfa.kitcoop.payload.requests.AddPointageRequest;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
+import ensa.pfa.kitcoop.repositories.PersonnelRepository;
 import ensa.pfa.kitcoop.repositories.PointageRepository;
 import ensa.pfa.kitcoop.repositories.UniteProdRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,7 @@ import java.util.Optional;
 public class PointageService {
     private final UniteProdRepository uniteProdRepository;
     private final PointageRepository pointageRepository;
+    private final PersonnelRepository personnelRepository;
     public APIResponse getAllPointages() {
         try{
             List<Pointage> pointages = pointageRepository.findAll();
@@ -42,20 +42,9 @@ public class PointageService {
         }
     }
 
-    public APIResponse updatePointage(Long id, Pointage pointage){
+    public APIResponse updatePointage(Long id, AddPointageRequest pointage){
         Pointage _pointage = pointageRepository.findById(id).get();
-        _pointage.setNumBordereau(pointage.getNumBordereau());
-        _pointage.setCodeUnitProd(pointage.getCodeUnitProd());
-        _pointage.setIntituleUnitProd(pointage.getIntituleUnitProd());
-        _pointage.setNom(pointage.getNom());
-        _pointage.setPrenom(pointage.getPrenom());
-        _pointage.setMatricule(pointage.getMatricule());
-        _pointage.setDateFin(pointage.getDateFin());
-        _pointage.setHeuresNorm(pointage.getHeuresNorm());
-        _pointage.setDateDebut(pointage.getDateDebut());
-        _pointage.setHeuresSup25(pointage.getHeuresSup25());
-        _pointage.setHeuresSup50(pointage.getHeuresSup50());
-        _pointage.setHeuresSup100(pointage.getHeuresSup100());
+        mapPointageToPointageRequest(pointage, _pointage);
         Pointage pointage1 = pointageRepository.save(_pointage);
         return new APIResponse(HttpStatus.OK.value(), pointage1, "modification effectuée");
     }
@@ -69,12 +58,27 @@ public class PointageService {
         }
     }
 
-    public APIResponse insertPointage(Pointage pointage) {
+    public APIResponse insertPointage(AddPointageRequest request) {
         try{
-            Pointage p = pointageRepository.save(pointage);
-            return new APIResponse(HttpStatus.OK.value(), pointage, "Pointage ajouté");
+            Pointage pointage = new Pointage();
+            mapPointageToPointageRequest(request, pointage);
+            Pointage _pointage = pointageRepository.save(pointage);
+            return new APIResponse(HttpStatus.OK.value(), _pointage, "Pointage ajouté");
         }catch (Exception e){
             return new APIResponse(HttpStatus.BAD_REQUEST.value(), null, "Error");
         }
+    }
+
+    private void mapPointageToPointageRequest(AddPointageRequest request, Pointage pointage) {
+        pointage.setNumBordereau(request.getNumBordereau());
+        pointage.setCodeUnitProd(request.getCodeUnitProd());
+        Personnel personnel = personnelRepository.findByMatricule(request.getMatricule()).get();
+        pointage.setPersonnel(personnel);
+        pointage.setDateDebut(request.getDateDebut());
+        pointage.setDateFin(request.getDateFin());
+        pointage.setHeuresNorm(request.getHeuresNorm());
+        pointage.setHeuresSup25(request.getHeuresSup25());
+        pointage.setHeuresSup50(request.getHeuresSup50());
+        pointage.setHeuresSup100(request.getHeuresSup100());
     }
 }

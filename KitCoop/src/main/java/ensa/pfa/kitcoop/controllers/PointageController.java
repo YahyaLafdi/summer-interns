@@ -1,6 +1,7 @@
 package ensa.pfa.kitcoop.controllers;
 
 import ensa.pfa.kitcoop.models.Pointage;
+import ensa.pfa.kitcoop.payload.requests.AddPointageRequest;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
 import ensa.pfa.kitcoop.services.PointageService;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class PointageController {
         }
     }
     @PostMapping("/pointages")
-    public ResponseEntity<?> insertPointage(@RequestBody Pointage pointage){
+    public ResponseEntity<?> insertPointage(@RequestBody AddPointageRequest pointage){
         try{
             return ResponseEntity.ok(pointageService.insertPointage(pointage));
         }catch (Exception e){
@@ -42,7 +43,7 @@ public class PointageController {
 
     @PostMapping("/pointages/{id}")
     public ResponseEntity<?> updatePointage(@PathVariable("id") Long id,
-                                            @RequestBody Pointage pointage){
+                                            @RequestBody AddPointageRequest pointage){
         APIResponse apiResponse = pointageService.updatePointage(id, pointage);
         return ResponseEntity.ok(apiResponse);
     }

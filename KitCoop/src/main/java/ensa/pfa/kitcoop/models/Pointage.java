@@ -27,12 +27,12 @@ public class Pointage {
     private String codeUnitProd;
     @Column(name = "INTITULE_UNIT_PROD")
     private String intituleUnitProd;
-    @Column(name = "MATRICULE")
-    private String matricule;
-    @Column(name = "NOM")
-    private String nom;
-    @Column(name = "PRENOM")
-    private String prenom;
+//    @Column(name = "MATRICULE")
+//    private String matricule;
+//    @Column(name = "NOM")
+//    private String nom;
+//    @Column(name = "PRENOM")
+//    private String prenom;
     @Column(name = "DATE_DEBUT")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateDebut;
@@ -50,6 +50,9 @@ public class Pointage {
     @Column(name = "TOTAL")
     private Integer total;
 
+    @ManyToOne
+    @JoinColumn(name = "PERSONNEL")
+    private Personnel personnel;
 //    @ManyToOne
 //    @JoinColumn(name = "unit_production_id")
 //    private UniteProd uniteProd;
