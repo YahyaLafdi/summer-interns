@@ -16,8 +16,8 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{key: "codeUnitProd", title: "Unité de production"},
 				//{key: "intituleUnitProd", title: "Intitulé Unité de production"},
 				{key: "matricule", title: "Matricule"},
-				/*{key: "nom", title: "Nom"},
-				{key: "prenom", title: "Prénom"},*/
+				{key: "nom", title: "Nom"},
+				/*{key: "prenom", title: "Prénom"},*/
 				{key: "dateDebut", title: "Date de début"},
 				{key: "dateFin", title: "Date de fin"},
 				/*{key: "heuresNorm", title: "Heures normales"},

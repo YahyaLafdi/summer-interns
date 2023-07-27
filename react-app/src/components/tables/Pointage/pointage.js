@@ -21,7 +21,8 @@ const PointageTable = ({columns, data, handleEdit, handleDelete }) => {
 						<tr key={item.id}>
 							<td>{item.numBordereau}</td>
 							<td>{item.codeUnitProd}</td>
-							<td>{item.matricule}</td>
+							<td>{item.personnel.matricule}</td>
+							<td>{item.personnel.nom} </td>
 							<td>{item.dateDebut} </td>
 							<td>{item.dateFin} </td>
 							<td>{item.total}</td>

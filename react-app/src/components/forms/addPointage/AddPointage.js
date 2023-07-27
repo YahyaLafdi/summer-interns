@@ -6,22 +6,12 @@ import { initPointages, pointageValidation, pointagesDetails1 } from './utils'
 import axios from 'axios'
 
 const AddPointage = ({ visible, activeTab, setLoading, refetch, setRefetch }) => {
-  /* useEffect(() => {
-    const form = document.querySelector("#form"),
-      nextBtn = form.querySelector(".nextBtn"),
-      backBtn = form.querySelector(".backBtn");
-    nextBtn.addEventListener("click", () => {
-      form.classList.add("secActive");
-    });
-    backBtn.addEventListener("click", () => form.classList.remove("secActive"))
-  })*/
   const [isReady, setIsReady] = useState(false);
   const [formInfos, setFormInfos] = useState(initPointages);
 
   useEffect(() => {
     const doAdd = async () => {
-      try{
-        
+      try{        
         console.log(formInfos)
         setLoading(true);
         await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/${activeTab}s`, formInfos);
