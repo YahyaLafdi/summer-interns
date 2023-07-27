@@ -14,6 +14,7 @@ import ClientTable from "../tables/client";
 import ProduitTable from "../tables/Produit";
 import UtilisateurTable from "../tables/utilisateurs";
 import PointageTable from "../tables/Pointage/pointage";
+import CompositionTable from "../tables/Composition";
 
 export default function Table({
 	title,
@@ -116,7 +117,7 @@ export default function Table({
 
 	const handleAdd = async () => {
 		setLoading(true);
-		const fournisseursData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/fournisseurs`);
+		const fournisseursData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/produits`);
 		const matieresData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/matieres`);
 		setFournisseurs(fournisseursData);
 		setMatieres(matieresData);
@@ -202,6 +203,15 @@ export default function Table({
 				<section className="table-body">
 					{activeTab === "personnel" && (
 						<PersonnelTable
+							columns={columns}
+							data={data}
+							handleEdit={handleEdit}
+							handleDelete={handleDelete}
+							handleDisable={handleDisable}
+						/>
+					)}
+					{activeTab === "composition" && (
+						<CompositionTable
 							columns={columns}
 							data={data}
 							handleEdit={handleEdit}

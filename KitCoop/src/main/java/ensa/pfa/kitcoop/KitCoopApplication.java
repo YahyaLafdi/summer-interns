@@ -27,7 +27,7 @@ public class KitCoopApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        notificationService.checkSeuilAndSendNotification();
+        //notificationService.checkSeuilAndSendNotification();
         User user1 = new User(1, "nirina", "151000", "ADMIN", true, "nirinamercia@gmail.com", null);
         userService.createUser(user1);
     }

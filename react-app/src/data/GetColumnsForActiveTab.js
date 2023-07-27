@@ -74,6 +74,13 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{ key: "seuil", title: "Seuil" },
 				{ key: "lieu", title: "Lieu de stockage" },
 			];
+			case "composition":
+			return [
+				{ key: "Produit", title: "Produit" },
+				{ key: "Matiere", title: "Matiere" },
+				{ key: "Quantité", title: "Quantité" },
+				
+			];
 	
 		default:
 			return [];

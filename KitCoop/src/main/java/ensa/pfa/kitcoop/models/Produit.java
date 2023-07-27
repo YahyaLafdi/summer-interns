@@ -26,8 +26,7 @@ public class Produit {
     @Column(name = "PRIX_UNITAIRE")
     private Double prixUnitaire;
 
-    @Column(name = "QUANTITE_EN_STOCK")
-    private Double quantiteStock;
+
 
     @Column(name = "SEUIL")
     private Double seuil;

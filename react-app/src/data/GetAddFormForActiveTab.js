@@ -8,6 +8,7 @@ import AddPersonnel from "../components/forms/addPersonnel";
 import AddPointage from "../components/forms/addPointage/AddPointage";
 import AddProduit from "../components/forms/addProduit";
 import AddUtilisateur from "../components/forms/addUtilisateur";
+import AddComposition from "../components/forms/addComposition";
 
 export default function GetAddFormForActiveTab({
 	visible,
@@ -68,6 +69,17 @@ export default function GetAddFormForActiveTab({
 					refetch={refetch}
 					setLoading={setLoading}
 					additionalDataFournisseurs={additionalDataFournisseurs}
+				/>
+			);
+			case "composition":
+			return (
+				<AddComposition
+					visible={visible}
+					activeTab={activeTab}
+					setRefetch={setRefetch}
+					refetch={refetch}
+					setLoading={setLoading}
+					additionalDataMatieres={additionalDataMatieres}
 				/>
 			);
 		case "client":
