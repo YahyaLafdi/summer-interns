@@ -1,5 +1,9 @@
 import * as Yup from "yup";
 import { nombreValidation, requiredValidation } from "../addPersonnel/utils";
+import axios from "axios";
+
+
+
 
 export const pointagesDetails1 = [
     {
@@ -10,7 +14,7 @@ export const pointagesDetails1 = [
     {
         name: "codeUnitProd",
         label: "Code unité de production",
-        type:"text",
+        type:"select",
     },
    /* {
         name:  "intituleUnitProd",

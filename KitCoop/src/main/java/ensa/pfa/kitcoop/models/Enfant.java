@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,7 @@ public class Enfant {
     private Boolean isScolarised;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "DATE_NAISSANCE")
-    private Date ddn;
+    private LocalDate ddn;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")

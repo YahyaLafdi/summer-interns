@@ -8,6 +8,39 @@ import axios from 'axios'
 const AddPointage = ({ visible, activeTab, setLoading, refetch, setRefetch }) => {
   const [isReady, setIsReady] = useState(false);
   const [formInfos, setFormInfos] = useState(initPointages);
+  const [unitProds, setUnitProds] = useState(null);
+  const [personnels, setPersonnels] = useState(null);
+
+  useEffect(() => {
+    setRefetch(!refetch);
+    console.log("refetching...");
+  },[])
+
+  useEffect(() => {
+    const getUnitProd = async () => {
+      try {
+        console.log("calling function getUnitProd()...")
+        let {data}  = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/api/produnit`
+        );
+        setUnitProds(data.data);
+        let pers = (await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/api/personnels`
+        )).data;
+        setPersonnels(pers.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getUnitProd();
+    console.log(unitProds)
+  }, [refetch]);
+
+  useEffect(() => {
+    console.log(personnels)
+  }, [personnels])
+  
+ 
 
   useEffect(() => {
     const doAdd = async () => {
@@ -50,11 +83,40 @@ const AddPointage = ({ visible, activeTab, setLoading, refetch, setRefetch }) =>
                       {pointagesDetails1.map((elt) => (
                         <div className="input-field">
                           <label>{elt.label}</label>
-                          <Field
+                          {(elt.name!=="codeUnitProd" && elt.name!=="matricule")&& <Field
                             type={elt.type}
                             placeholder={elt.label}
                             name={elt.name}
+                          />}
+                          {elt.name==="codeUnitProd" && <>
+                            <Field 
+                              as={elt.type}
+                              name={elt.name}
+                              id="codeUnitProd"
+                              placeholder="Start typing..."
+                            >
+                             <option value="" disabled selected>
+                                  Code Unité de production
+                                </option>
+                              {unitProds?.map(unit =>(
+                                <option key={unit.id} value={unit.id}>{unit.id}</option>
+                              ))}
+                            </Field>
+                          </>}
+                          {elt.name==="matricule" && <> 
+                          <Field
+                            as="input"
+                            name="matricule"
+                            id="matricule"
+                            placeholder="Matricule"
+                            list="matricules"
                           />
+                          <datalist id='matricules' >
+                                {personnels?.map(pers =>(
+                                  <option key={pers.id} value={pers.matricule}>{pers.nom} {pers.prenom}  </option>
+                                ))}
+                          </datalist>
+                          </>}
                           <ErrorMessage
                             name={elt.name}
                             component="div"

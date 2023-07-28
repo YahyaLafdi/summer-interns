@@ -51,7 +51,7 @@ public class Personnel {
     private String photoUrl;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "LocalDate_NAISSANCE")
+    @Column(name = "DATE_NAISSANCE")
     private LocalDate ddn;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -80,7 +80,7 @@ public class Personnel {
     @Column(name = "VILLE")
     private String ville;
 
-    @Column(name = "LocalDate_EMBAUCHE")
+    @Column(name = "DATE_EMBAUCHE")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateEmbauche;
 
@@ -103,7 +103,7 @@ public class Personnel {
     @Column(name = "NOMBRE_ENFANTS")
     private Integer nombreEnfants;
 
-    @Column(name = "LocalDate_DEPART")
+    @Column(name = "DATE_DEPART")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateDepart;
 
