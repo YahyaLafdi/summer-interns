@@ -17,7 +17,7 @@ export default function GetTitleForActiveTab(activeTab) {
 		case "achat":
 			return "Vos achats";
 		case "pointage":
-			return "Pointage des personnels";
+			return "Pointage";
 
 		default:
 			return [];

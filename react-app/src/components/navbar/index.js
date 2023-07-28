@@ -100,8 +100,8 @@ export default function NavBar({ isAdmin, activeTab, setVisible, setActiveTab, s
 									handleTabClick("pointage");
 								}}
 							>
-								<img src="./images/icons/add-friend.png" alt="" />{" "}
-								<span className="text nav-text">Pointage des personnels</span>
+								<img src="./images/icons/target.png" alt="" />{" "}
+								<span className="text nav-text">Pointage</span>
 							</Link>
 						</li>
 						<li className="nav-link">

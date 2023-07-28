@@ -14,7 +14,7 @@ export default function GetColumnsForActiveTab(activeTab) {
 			return [
 				{key: "numBordereau", title: "N° Bordereau"},
 				{key: "codeUnitProd", title: "Unité de production"},
-				//{key: "intituleUnitProd", title: "Intitulé Unité de production"},
+				//{key: "intituleUnitProd", title: "Intitulé UP"},
 				{key: "matricule", title: "Matricule"},
 				{key: "nom", title: "Nom"},
 				/*{key: "prenom", title: "Prénom"},*/

@@ -2,6 +2,7 @@ package ensa.pfa.kitcoop.services;
 
 import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.models.Pointage;
+import ensa.pfa.kitcoop.models.UniteProd;
 import ensa.pfa.kitcoop.payload.requests.AddPointageRequest;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
 import ensa.pfa.kitcoop.repositories.PersonnelRepository;
@@ -71,7 +72,9 @@ public class PointageService {
 
     private void mapPointageToPointageRequest(AddPointageRequest request, Pointage pointage) {
         pointage.setNumBordereau(request.getNumBordereau());
-        pointage.setCodeUnitProd(request.getCodeUnitProd());
+        UniteProd uniteProd = uniteProdRepository.findById(request.getCodeUnitProd()).get();
+        pointage.setUniteProd(uniteProd);
+        //pointage.setCodeUnitProd(request.getCodeUnitProd());
         Personnel personnel = personnelRepository.findByMatricule(request.getMatricule()).get();
         pointage.setPersonnel(personnel);
         pointage.setDateDebut(request.getDateDebut());

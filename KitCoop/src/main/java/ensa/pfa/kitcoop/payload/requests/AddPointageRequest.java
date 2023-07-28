@@ -3,16 +3,16 @@ package ensa.pfa.kitcoop.payload.requests;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class AddPointageRequest {
     private String numBordereau;
-    private String codeUnitProd;
+    private Long codeUnitProd;
     private String matricule;
-    private Date dateDebut;
-    private Date dateFin;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
     private Integer heuresNorm;
     private Integer heuresSup25;
     private Integer heuresSup50;

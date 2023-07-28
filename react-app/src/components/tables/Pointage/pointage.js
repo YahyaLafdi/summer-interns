@@ -17,12 +17,13 @@ const PointageTable = ({columns, data, handleEdit, handleDelete }) => {
 			</thead>
 			<tbody>
 				{data &&
-					data.map((item) => (
+					data?.map((item) => (
 						<tr key={item.id}>
 							<td>{item.numBordereau}</td>
-							<td>{item.codeUnitProd}</td>
-							<td>{item.personnel.matricule}</td>
-							<td>{item.personnel.nom} </td>
+							<td>{item.uniteProd?.designation}</td>
+							{/*<td>{item.uniteProd?.designation} </td>*/}
+							<td>{item?.personnel?.matricule}</td>
+							<td>{item?.personnel?.nom} </td>
 							<td>{item.dateDebut} </td>
 							<td>{item.dateFin} </td>
 							<td>{item.total}</td>

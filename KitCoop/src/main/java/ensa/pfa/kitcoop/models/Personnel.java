@@ -11,13 +11,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "PERSONNEL")
 public class Personnel {
@@ -50,12 +51,12 @@ public class Personnel {
     private String photoUrl;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "DATE_NAISSANCE")
-    private Date ddn;
+    @Column(name = "LocalDate_NAISSANCE")
+    private LocalDate ddn;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "ADHESION_DATE")
-    private Date dda;
+    @Column(name = "ADHESION_LocalDate")
+    private LocalDate dda;
 
     @Column(name = "MOTIF")
     private String motif;
@@ -79,9 +80,9 @@ public class Personnel {
     @Column(name = "VILLE")
     private String ville;
 
-    @Column(name = "DATE_EMBAUCHE")
+    @Column(name = "LocalDate_EMBAUCHE")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateEmbauche;
+    private LocalDate dateEmbauche;
 
     //@Enumerated(EnumType.STRING)
     @Column(name = "BASE_PAIEMENT")
@@ -102,9 +103,9 @@ public class Personnel {
     @Column(name = "NOMBRE_ENFANTS")
     private Integer nombreEnfants;
 
-    @Column(name = "DATE_DEPART")
+    @Column(name = "LocalDate_DEPART")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateDepart;
+    private LocalDate dateDepart;
 
     @Column(name = "RENSEIGNEMENTS_DIVERS")
     private String renseignements;

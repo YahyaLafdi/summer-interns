@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class Adherent {
 
     @Column(name = "DATE_NAISSANCE")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date ddn;
+    private LocalDate ddn;
 
     @Column(name = "CIN")
     private String cin;
@@ -50,11 +50,11 @@ public class Adherent {
 
     @Column(name = "ADHESION_DATE")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dda;
+    private LocalDate dda;
 
-    @Column(name = "DATE_DEPART")
+    @Column(name = "Date_DEPART")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date ddd;
+    private LocalDate ddd;
 
     @Column(name = "MOTIF")
     private String motif;
