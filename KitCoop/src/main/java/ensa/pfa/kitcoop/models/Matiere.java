@@ -1,6 +1,5 @@
 package ensa.pfa.kitcoop.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +37,12 @@ public class Matiere {
 
     @Column(name = "NOM_FOURNISSEUR")
     private String nomFournisseur;
+    @ManyToOne
+    @JoinColumn(name = "PRODUIT_ID")
+    private Produit produit;
+    @OneToMany(mappedBy = "matiere",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompositionProduit> compositionProducts= new ArrayList<>();
+
 
 
 }
