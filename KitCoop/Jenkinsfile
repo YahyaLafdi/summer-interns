@@ -9,7 +9,7 @@ pipeline {
             steps {
                 checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/YahyaLafdi/summer-interns/']])
               sh 'cd KitCoop'
-                sh ' mvn clean install '
+               // sh ' mvn clean install '
             }
           }
 
