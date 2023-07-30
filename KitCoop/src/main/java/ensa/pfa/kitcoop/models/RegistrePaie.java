@@ -1,16 +1,15 @@
 package ensa.pfa.kitcoop.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
 @NoArgsConstructor
+@ToString
 @Getter
 @Setter
 @Table(name = "REGISTRE_DE_PAIE")
@@ -20,25 +19,30 @@ public class RegistrePaie {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "pointage_id")
     private Pointage pointage;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double salaireBase;
-
-    public RegistrePaie(Pointage pointage) {
-        this.pointage = pointage;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double primeAnciennete;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double salaireBrut;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double retenueCnss;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
 //    private Double retenueAmo;
     private Double retenueIr;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
 //    private Double avancesEtAutresRetenues;
     private Double salaireNet;
 
 //    public  RegistrePaie(Pointage p){
 //        this.pointage = p;
 //    }
+    public RegistrePaie(Pointage pointage) {
+    this.pointage = pointage;
+}
 
     @PrePersist
     @PreUpdate

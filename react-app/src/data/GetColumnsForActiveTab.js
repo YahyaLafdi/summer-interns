@@ -26,6 +26,19 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{key: "heuresSup100", title: "Heures supplémentaires 100%"},*/
 				{key: "total", title: "Total"}
 			];
+		case "paie" :
+			return [
+				{key: "matricule", title: "Matricule"},
+				{key: "nomPrenom", title: "Nom et Prénom"},
+				{key: "dateDebut", title: "Date de début"},
+				{key: "dateFin", title: "Date de fin"},
+				{key: "salaireBase", title: "Salaire de base"},
+				{key: "primeAnciennete", title: "Prime d'ancienneté"},
+				{key: "salaireBrut", title: "Salaire brut"},
+				{key: "retenueCnss", title: "Retenue CNSS"},
+				{key: "retenueIr", title: "Retenue IR"},
+				{key: "salaireNet", title: "Salaire net"}
+			]
 		case "utilisateur":
 			return [
 				{ key: "username", title: "Nom d'utilisateur" },

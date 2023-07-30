@@ -15,6 +15,7 @@ import ProduitTable from "../tables/Produit";
 import UtilisateurTable from "../tables/utilisateurs";
 import PointageTable from "../tables/Pointage/pointage";
 import CompositionTable from "../tables/Composition";
+import RegistrePaieTable from "../tables/RegistrePaie/registrePaie";
 
 export default function Table({
 	title,
@@ -193,7 +194,7 @@ export default function Table({
 						<input type="search" placeholder="Rechercher..." />
 						<Search />
 					</div>
-					<div className="export__file">
+					<div className="export__file" style={activeTab==="paie"?{display:"none"}:{}}>
 						<label htmlFor="export-file" className="export__file-btn" title="Export File"></label>
 						<button className="button" onClick={handleAdd}>
 							Ajouter
@@ -221,6 +222,14 @@ export default function Table({
 					)}
 					{activeTab === "pointage" && (
 						<PointageTable
+							columns={columns}
+							data={data}
+							handleDelete={handleDelete}
+							handleEdit={handleEdit}
+						/>
+					)}
+					{activeTab === "paie" && (
+						<RegistrePaieTable
 							columns={columns}
 							data={data}
 							handleDelete={handleDelete}

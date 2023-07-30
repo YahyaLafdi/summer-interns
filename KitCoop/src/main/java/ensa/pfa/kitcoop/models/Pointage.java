@@ -42,6 +42,7 @@ public class Pointage {
     private Integer heuresSup50;
     @Column(name = "HSUP_100")
     private Integer heuresSup100;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     @Column(name = "TOTAL")
     private Double total;
 

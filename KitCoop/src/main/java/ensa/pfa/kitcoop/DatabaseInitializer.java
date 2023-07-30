@@ -46,7 +46,7 @@ public class DatabaseInitializer implements ApplicationRunner {
         UniteProd uniteProd1 = new UniteProd(2l, "unite_prod_2", "Sidi Youssef", "Agadir");
         uniteProdService.createUniteProd(uniteProd1);
         UniteProd uniteProd2 = new UniteProd(3l, "unite_prod_3", "Dakhla", "Agadir");
-        Pointage pointage = new Pointage(1l, "001", LocalDate.parse("2023-05-12"), LocalDate.parse("2023-05-05", formatter), 18,6,1,0,0.0,personnel1,uniteProd);
+        Pointage pointage = new Pointage(1l, "1", LocalDate.parse("2023-05-12"), LocalDate.parse("2023-05-05", formatter), 18,6,1,0,0.0,personnel1,uniteProd);
         pointageRepository.save(pointage);
         RegistrePaie registrePaie = new RegistrePaie(pointage);
         registrePaieRepository.save(registrePaie);

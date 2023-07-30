@@ -18,6 +18,8 @@ export default function GetTitleForActiveTab(activeTab) {
 			return "Vos achats";
 		case "pointage":
 			return "Pointage";
+		case "paie":
+			return "Registre de paie";
 		case "composition":
 			return "Composition des produits";
 

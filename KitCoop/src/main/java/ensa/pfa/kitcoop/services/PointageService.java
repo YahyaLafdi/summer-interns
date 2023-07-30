@@ -2,13 +2,17 @@ package ensa.pfa.kitcoop.services;
 
 import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.models.Pointage;
+import ensa.pfa.kitcoop.models.RegistrePaie;
 import ensa.pfa.kitcoop.models.UniteProd;
 import ensa.pfa.kitcoop.payload.requests.AddPointageRequest;
 import ensa.pfa.kitcoop.payload.responses.APIResponse;
 import ensa.pfa.kitcoop.repositories.PersonnelRepository;
 import ensa.pfa.kitcoop.repositories.PointageRepository;
+import ensa.pfa.kitcoop.repositories.RegistrePaieRepository;
 import ensa.pfa.kitcoop.repositories.UniteProdRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class PointageService {
     private final UniteProdRepository uniteProdRepository;
     private final PointageRepository pointageRepository;
     private final PersonnelRepository personnelRepository;
+    private final RegistrePaieRepository registrePaieRepository;
+    private static final Log log = LogFactory.getLog(PointageService.class);
     public APIResponse getAllPointages() {
         try{
             List<Pointage> pointages = pointageRepository.findAll();
@@ -52,6 +58,12 @@ public class PointageService {
 
     public APIResponse deletePointage(Long id){
         try{
+            List<RegistrePaie> registrePaieList = registrePaieRepository.getRegistrePaieByPointageId(id);
+            for(RegistrePaie r : registrePaieList){
+                r.setPointage(null);
+                log.info(r.toString());
+                registrePaieRepository.save(r);
+            }
             pointageRepository.deleteById(id);
             return new APIResponse(HttpStatus.OK.value(), null, "Suppression effectuée");
         }catch (Exception e){
@@ -64,6 +76,7 @@ public class PointageService {
             Pointage pointage = new Pointage();
             mapPointageToPointageRequest(request, pointage);
             Pointage _pointage = pointageRepository.save(pointage);
+            registrePaieRepository.save(new RegistrePaie(_pointage));
             return new APIResponse(HttpStatus.OK.value(), _pointage, "Pointage ajouté");
         }catch (Exception e){
             return new APIResponse(HttpStatus.BAD_REQUEST.value(), null, "Error");

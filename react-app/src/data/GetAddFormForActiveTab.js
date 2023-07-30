@@ -40,6 +40,10 @@ export default function GetAddFormForActiveTab({
 					setLoading={setLoading}
 				/>
 			)
+		case "paie" : 
+			return (
+				<></>
+			)
 		case "adherent":
 			return (
 				<AddAdherent

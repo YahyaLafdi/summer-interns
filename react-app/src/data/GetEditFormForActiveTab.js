@@ -51,6 +51,10 @@ export default function GetEditFormForActiveTab({
 					item={item}
 				/>
 			)
+		case "paie":
+			return (
+				<></>
+			)
 		case "fournisseur":
 			return (
 				<EditFournisseur

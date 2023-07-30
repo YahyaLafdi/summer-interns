@@ -106,6 +106,17 @@ export default function NavBar({ isAdmin, activeTab, setVisible, setActiveTab, s
 						</li>
 						<li className="nav-link">
 							<Link
+								className={activeTab === "paie" ? "active" : ""}
+								onClick={() => {
+									handleTabClick("paie");
+								}}
+							>
+								<img src="./images/icons/registre.png" alt="" />{" "}
+								<span className="text nav-text">Registre de paie</span>
+							</Link>
+						</li>
+						<li className="nav-link">
+							<Link
 								className={activeTab === "matiere" ? "active" : ""}
 								onClick={() => {
 									handleTabClick("matiere");
