@@ -1,0 +1,21 @@
+pipeline {  
+  agent any 
+  tools {
+    maven 'maven_3'
+  }
+
+  stages{
+          stage(' Building Maven  project ' ){
+            steps {
+                //checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/YahyaLafdi/summer-interns/']])
+              sh 'cd KitCoop'
+               // //sh ' mvn clean install '
+            }
+          }
+
+
+    
+  }
+
+  
+}
