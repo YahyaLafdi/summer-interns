@@ -26,7 +26,7 @@ public class FournisseurController {
     }
 
     @CrossOrigin(origins = "${REACT_APP_FRONTEND_URL}")
-    @GetMapping("/api1/fournisseurs")
+    @GetMapping("/api2/fournisseurs")
     public ResponseEntity<APIResponse> getAllFournisseur(){
         APIResponse apiResponse = fournisseurService.getAllFournisseurs();
         return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
