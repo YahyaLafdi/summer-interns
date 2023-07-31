@@ -27,6 +27,7 @@ const RegistrePaieTable = ({columns, data, handleEdit, handleDelete }) => {
 							<td>{item?.heuresNorm}</td>
 							<td>{item?.heuresSup25}</td>
 							<td>{item?.heuresSup50}</td>
+							<td>{item?.heuresSup100}</td>
 							<td>{item?.salaireBase}</td>
 							<td>{item?.primeAnciennete}</td>
 							<td>{item?.salaireBrut}</td>

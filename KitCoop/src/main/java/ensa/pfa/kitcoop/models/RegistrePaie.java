@@ -56,6 +56,7 @@ public class RegistrePaie {
         this.heuresNorm = this.pointage.getHeuresNorm();
         this.heuresSup25 = this.pointage.getHeuresSup25();
         this.heuresSup50 = this.pointage.getHeuresSup50();
+        this.heuresSup100 = this.pointage.getHeuresSup100();
         this.tauxHoraire = this.pointage.getPersonnel().getTauxPaiement();
         //Salaire de base
         Integer n = this.pointage.getHeuresNorm();

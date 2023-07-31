@@ -37,6 +37,7 @@ export default function GetColumnsForActiveTab(activeTab) {
 				{key: "heuresNorm", title: "Heures normales"},
 				{key: "heuresSup25", title: "Heures sup 25%"},
 				{key: "heuresSup50", title: "Heures sup 50%"},
+				{key: "heuresSup100", title:"Heures sup 100%"},
 				{key: "salaireBase", title: "Salaire de base"},
 				{key: "primeAnciennete", title: "Prime d'ancienneté"},
 				{key: "salaireBrut", title: "Salaire brut"},
