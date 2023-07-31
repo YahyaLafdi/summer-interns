@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class AddPointageRequest {
-    private String numBordereau;
     private Long codeUnitProd;
     private String matricule;
     private LocalDate dateDebut;

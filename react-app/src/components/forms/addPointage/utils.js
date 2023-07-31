@@ -7,20 +7,10 @@ import axios from "axios";
 
 export const pointagesDetails1 = [
     {
-        name: "numBordereau",
-        label: "N° Bordereau",
-        type: "text",
-    },
-    {
         name: "codeUnitProd",
         label: "Code unité de production",
         type:"select",
     },
-   /* {
-        name:  "intituleUnitProd",
-        label: "Intitulé Unité de production",
-        type: "text",
-    },*/
     {
         name: "matricule",
         label: "Matricule",
@@ -59,8 +49,6 @@ export const pointagesDetails1 = [
 ];
 
 export const initPointages = {
-    numBordereau: "",
-    codeUnitProd: "",
     matricule: "",
     dateDebut:"",
     dateFin:"",
@@ -72,8 +60,6 @@ export const initPointages = {
 }
 
 export const pointageValidation = Yup.object().shape({
-    numBordereau: requiredValidation,
-    codeUnitProd: requiredValidation,
     matricule: requiredValidation, 
     dateDebut: requiredValidation,
     dateFin:  requiredValidation, 

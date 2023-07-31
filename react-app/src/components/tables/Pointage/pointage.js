@@ -18,15 +18,20 @@ const PointageTable = ({columns, data, handleEdit, handleDelete }) => {
 			<tbody>
 				{data &&
 					data?.map((item) => (
-						<tr key={item.id}>
-							<td>{item.numBordereau}</td>
-							<td>{item.uniteProd?.designation}</td>
-							{/*<td>{item.uniteProd?.designation} </td>*/}
+						<tr key={item?.id}>
+							<td>{item?.id}</td>
+							<td>{item?.codeUnitProd}</td>
+							<td>{item?.intituleUnitProd}</td>
 							<td>{item?.personnel?.matricule}</td>
-							<td>{item?.personnel?.nom} </td>
-							<td>{item.dateDebut} </td>
-							<td>{item.dateFin} </td>
-							<td>{item.total}</td>
+							<td>{item?.personnel?.nom}</td>
+							<td>{item?.personnel?.prenom}</td>
+							<td>{item?.dateDebut}</td>
+							<td>{item?.dateFin}</td>
+							<td>{item?.heuresNorm}</td>
+							<td>{item?.heuresSup25}</td>
+							<td>{item?.heuresSup50}</td>
+							<td>{item?.heuresSup100}</td>
+							<td>{item?.total}</td>
 							<td>
 								{/* edit button */}
 								<img

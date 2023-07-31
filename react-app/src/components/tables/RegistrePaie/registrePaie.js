@@ -18,16 +18,23 @@ const RegistrePaieTable = ({columns, data, handleEdit, handleDelete }) => {
 				{data &&
 					data?.map((item) => (
 						<tr key={item?.id}>
-							<td>{item?.pointage?.personnel.matricule}</td>
-							<td>{item?.pointage?.personnel.nom} {item?.pointage?.personnel.prenom}</td>
-							<td>{item?.pointage?.dateDebut}</td>
-							<td>{item?.pointage?.dateFin} </td>
-							<td>{item?.salaireBase} </td>
-							<td>{item?.primeAnciennete} </td>
+							<td>{item?.matricule}</td>
+							<td>{item?.nom}</td>
+							<td>{item?.prenom}</td>
+							<td>{item?.tauxHoraire}</td>
+							<td>{item?.dateDebut}</td>
+							<td>{item?.dateFin}</td>
+							<td>{item?.heuresNorm}</td>
+							<td>{item?.heuresSup25}</td>
+							<td>{item?.heuresSup50}</td>
+							<td>{item?.salaireBase}</td>
+							<td>{item?.primeAnciennete}</td>
 							<td>{item?.salaireBrut}</td>
-                            <td>{item?.retenueCnss} </td>
+                            <td>{item?.retenueCnss}</td>
+							<td>{item?.retenueAmo}</td>
                             <td>{item?.retenueIr}</td>
-                            <td>{item?.salaireNet} </td>
+							<td>{item?.avancesEtAutresRetenues}</td>
+                            <td>{item?.salaireNet}</td>
 							<td>
 								{/* edit button */}
 								<img

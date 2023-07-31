@@ -125,7 +125,7 @@ const AddPointage = ({ visible, activeTab, setLoading, refetch, setRefetch }) =>
                         </div>
                       ))}
                     </div>
-                    <button disabled={!props.isValid || !props.touched.numBordereau } type='button' onClick={()=>{
+                    <button disabled={!props.isValid || !props.touched.codeUnitProd } type='button' onClick={()=>{
                       setFormInfos(props.values);
                      setIsReady(true);
                     }} className="">

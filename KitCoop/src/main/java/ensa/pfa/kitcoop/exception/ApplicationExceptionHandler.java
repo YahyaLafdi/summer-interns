@@ -49,7 +49,7 @@ public class ApplicationExceptionHandler {
         return message;
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleGlobalRuntimeException(RuntimeException ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(

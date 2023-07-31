@@ -1,5 +1,6 @@
 package ensa.pfa.kitcoop.services;
 
+import ensa.pfa.kitcoop.exception.InternalErrorException;
 import ensa.pfa.kitcoop.models.Personnel;
 import ensa.pfa.kitcoop.models.Pointage;
 import ensa.pfa.kitcoop.models.RegistrePaie;
@@ -58,16 +59,16 @@ public class PointageService {
 
     public APIResponse deletePointage(Long id){
         try{
-            List<RegistrePaie> registrePaieList = registrePaieRepository.getRegistrePaieByPointageId(id);
+           /* List<RegistrePaie> registrePaieList = registrePaieRepository.getRegistrePaieByPointageId(id);
             for(RegistrePaie r : registrePaieList){
                 r.setPointage(null);
                 log.info(r.toString());
                 registrePaieRepository.save(r);
-            }
+            }*/
             pointageRepository.deleteById(id);
-            return new APIResponse(HttpStatus.OK.value(), null, "Suppression effectuée");
+            return new APIResponse(HttpStatus.NO_CONTENT.value(), null, "Suppression effectuée");
         }catch (Exception e){
-            return new APIResponse(HttpStatus.BAD_REQUEST.value(), null, "Erreur de suppression");
+            throw new InternalErrorException("Quelque chose s'est mal passé. Réessayer  plus tard...");
         }
     }
 
@@ -84,7 +85,6 @@ public class PointageService {
     }
 
     private void mapPointageToPointageRequest(AddPointageRequest request, Pointage pointage) {
-        pointage.setNumBordereau(request.getNumBordereau());
         UniteProd uniteProd = uniteProdRepository.findById(request.getCodeUnitProd()).get();
         pointage.setUniteProd(uniteProd);
         //pointage.setCodeUnitProd(request.getCodeUnitProd());

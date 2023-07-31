@@ -13,32 +13,39 @@ export default function GetColumnsForActiveTab(activeTab) {
 		case "pointage":
 			return [
 				{key: "numBordereau", title: "N° Bordereau"},
-				{key: "codeUnitProd", title: "Unité de production"},
-				//{key: "intituleUnitProd", title: "Intitulé UP"},
+				{key: "codeUnitProd", title: "code UP"},
+				{key: "intituleUnitProd", title: "Intitulé UP"},
 				{key: "matricule", title: "Matricule"},
 				{key: "nom", title: "Nom"},
-				/*{key: "prenom", title: "Prénom"},*/
+				{key: "prenom", title: "Prénom"},
 				{key: "dateDebut", title: "Date de début"},
 				{key: "dateFin", title: "Date de fin"},
-				/*{key: "heuresNorm", title: "Heures normales"},
-				{key: "heuresSup25", title: "Heures supplémentaires 25%"},
-				{key: "heuresSup50", title: "Heures supplémentaires 50%"},
-				{key: "heuresSup100", title: "Heures supplémentaires 100%"},*/
+				{key: "heuresNorm", title: "Heures normales"},
+				{key: "heuresSup25", title: "Heures sup 25%"},
+				{key: "heuresSup50", title: "Heures sup 50%"},
+				{key: "heuresSup100", title: "Heures sup 100%"},
 				{key: "total", title: "Total"}
 			];
 		case "paie" :
 			return [
 				{key: "matricule", title: "Matricule"},
-				{key: "nomPrenom", title: "Nom et Prénom"},
+				{key: "nom", title: "Nom"},
+				{key: "prenom", title: "Prénom"},
+				{key: "tauxHoraire", title: "Taux horaire"},
 				{key: "dateDebut", title: "Date de début"},
 				{key: "dateFin", title: "Date de fin"},
+				{key: "heuresNorm", title: "Heures normales"},
+				{key: "heuresSup25", title: "Heures sup 25%"},
+				{key: "heuresSup50", title: "Heures sup 50%"},
 				{key: "salaireBase", title: "Salaire de base"},
 				{key: "primeAnciennete", title: "Prime d'ancienneté"},
 				{key: "salaireBrut", title: "Salaire brut"},
 				{key: "retenueCnss", title: "Retenue CNSS"},
+				{key: "retenueAmo", title: "Retenue AMO"},
 				{key: "retenueIr", title: "Retenue IR"},
+				{key: "avancesEtAutresRetenues", title: "Avances et Autres Retenues"},
 				{key: "salaireNet", title: "Salaire net"}
-			]
+			];
 		case "utilisateur":
 			return [
 				{ key: "username", title: "Nom d'utilisateur" },

@@ -19,98 +19,112 @@ public class RegistrePaie {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "pointage_id")
     private Pointage pointage;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
+    private String matricule;
+    private String nom;
+    private String prenom;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private Double tauxHoraire;
+    private Integer heuresNorm;
+    private Integer heuresSup25;
+    private Integer heuresSup50;
+    private Integer heuresSup100;
     private Double salaireBase;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double primeAnciennete;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double salaireBrut;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
     private Double retenueCnss;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
-//    private Double retenueAmo;
+    private Double retenueAmo;
     private Double retenueIr;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
-//    private Double avancesEtAutresRetenues;
+    private Double avancesEtAutresRetenues;
     private Double salaireNet;
 
-//    public  RegistrePaie(Pointage p){
-//        this.pointage = p;
-//    }
     public RegistrePaie(Pointage pointage) {
     this.pointage = pointage;
 }
 
     @PrePersist
     @PreUpdate
-    public void calculerSalaire(){
+    public void calculValeurs(){
+        this.matricule = this.pointage.getPersonnel().getMatricule();
+        this.nom = this.pointage.getPersonnel().getNom();
+        this.prenom = this.pointage.getPersonnel().getPrenom();
+        this.dateDebut = this.pointage.getDateDebut();
+        this.dateFin = this.pointage.getDateFin();
+        this.heuresNorm = this.pointage.getHeuresNorm();
+        this.heuresSup25 = this.pointage.getHeuresSup25();
+        this.heuresSup50 = this.pointage.getHeuresSup50();
+        this.tauxHoraire = this.pointage.getPersonnel().getTauxPaiement();
         //Salaire de base
         Integer n = this.pointage.getHeuresNorm();
         Integer n25 = this.pointage.getHeuresSup25();
         Integer n50 = this.pointage.getHeuresSup50();
         Integer n100 = this.pointage.getHeuresSup100();
         this.salaireBase = (n + 1.25*n25 + 1.5*n50 + 2*n100)*this.pointage.getPersonnel().getTauxPaiement();
+        if(this.pointage.getPersonnel().getIsDeclareCnss()) {
+            //Prime d'ancienneté
+            Period period = Period.between(this.pointage.getPersonnel().getDateEmbauche(), LocalDate.now());
+            Integer mois = period.getYears() * 12 + period.getMonths();
+            this.primeAnciennete = Math.round(getPrimeAnciennete(mois) * 100.0) / 100.0;
 
-        //Prime d'ancienneté
-        Period period = Period.between(this.pointage.getPersonnel().getDateEmbauche(), LocalDate.now());
-        Integer mois = period.getYears()*12 + period.getMonths();
-        this.primeAnciennete = getPrimeAnciennete(mois);
+            //Salaire bruit
+            this.salaireBrut = Math.round((this.salaireBase + this.primeAnciennete) * 100.0) / 100.0;
 
-        //Salaire bruit
-        this.salaireBrut = this.salaireBase + this.primeAnciennete;
+            //Retenue AMO
+            this.retenueAmo = (double) Math.round((this.salaireBrut*0.0226)*100.0)/100.0;
 
-        //retenur CNSS
-        if(this.salaireBrut<=6000.0){
-            this.retenueCnss = this.salaireBrut*0.0674;
-        }else{
-            this.retenueCnss = 6000.0*0.0448 + this.salaireBrut*0.0226;
+            //retenur CNSS
+            this.retenueCnss = Math.min(Math.round((6000.0 * 0.0448 + this.retenueAmo) * 100.0) / 100.0, Math.round(this.salaireBrut * 0.0674 * 100.0) / 100.0);
+
+            //Salaire Brut Imposable : SBI
+            Double sbi = this.salaireBrut - this.retenueCnss;
+
+            //Frais professionnels
+            Double fraisProfessionnels = Math.min(sbi * 0.2, 2500);
+
+            //Salaire Net Imposable : SNI
+            Double sni = sbi - fraisProfessionnels;
+
+            //IR brut
+            Double irBrut;
+            if (sni <= 2500) {
+                irBrut = 0.0;
+            } else if (sni > 2500 && sni <= 4166.67) {
+                irBrut = sni * 0.1 - 250;
+            } else if (sni > 4167.0 && sni <= 5000) {
+                irBrut = sni * 0.2 - 666.67;
+            } else if (sni > 5000 && sni <= 6666.67) {
+                irBrut = sni * 0.3 - 1166.67;
+            } else if (sni > 6667 && sni <= 15000) {
+                irBrut = sni * 0.34 - 1433.33;
+            } else {
+                irBrut = sni * 0.38 - 2033.33;
+            }
+
+
+            //Charge de famille
+            Double chargeFamille;
+            if (this.pointage.getPersonnel().getSituationFamiliale() == "Marié(e)") {
+                chargeFamille = Math.min(30.0 * 6, 30 * (this.pointage.getPersonnel().getNombreEnfants() + 1));
+            } else if (this.pointage.getPersonnel().getSituationFamiliale() != "Marié(e)" &&
+                    this.pointage.getPersonnel().getSituationFamiliale() != "Célibataire") {
+                chargeFamille = 30.0 * this.pointage.getPersonnel().getNombreEnfants();
+            } else {
+                chargeFamille = 0.0;
+            }
+
+            //IR net
+            Double irNet = irBrut - chargeFamille;
+            this.retenueIr = Math.round(irNet * 100.0) / 100.0;
+
+            //Salaire Net
+            this.salaireNet = (double) Math.round((salaireBrut - retenueCnss - irNet) * 100.0 / 100.0);
         }
-        //Salaire Brut Imposable : SBI
-        Double sbi = this.salaireBrut - this.retenueCnss;
-
-        //Frais professionnels
-        Double fraisProfessionnels = Math.min(sbi*0.2, 2500);
-
-        //Salaire Net Imposable : SNI
-        Double sni = sbi - fraisProfessionnels;
-
-        //IR brut
-        Double irBrut;
-        if(sni<=2500){
-            irBrut = 0.0;
-        } else if (sni > 2500 && sni <= 4166.67) {
-            irBrut = sni*0.1 - 250;
-        }else if(sni>4167.0 && sni<= 5000){
-            irBrut = sni*0.2 - 666.67;
-        }else if(sni>5000 && sni<=6666.67){
-            irBrut = sni*0.3 - 1166.67;
-        }else if(sni>6667 && sni<=15000){
-            irBrut = sni*0.34 - 1433.33;
-        }else {
-            irBrut = sni*0.38 - 2033.33;
+        else{
+            this.salaireNet = (double) Math.round(this.salaireBase);
         }
-
-
-        //Charge de famille
-        Double chargeFamille;
-        if(this.pointage.getPersonnel().getSituationFamiliale() == "Marié(e)"){
-            chargeFamille = Math.min(30.0*6,30*(this.pointage.getPersonnel().getNombreEnfants()+1));
-        }else if (this.pointage.getPersonnel().getSituationFamiliale() != "Marié(e)" &&
-        this.pointage.getPersonnel().getSituationFamiliale() != "Célibataire"){
-            chargeFamille = 30.0*this.pointage.getPersonnel().getNombreEnfants();
-        }else {
-            chargeFamille  = 0.0;
-        }
-
-        //IR net
-        Double irNet = irBrut - chargeFamille;
-        this.retenueIr = irNet;
-
-        //Salaire Net
-        this.salaireNet = salaireBrut - retenueCnss - irNet;
     }
 
     private Double getPrimeAnciennete(Integer mois){
