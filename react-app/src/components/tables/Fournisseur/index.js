@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import RightArrow from "../../../assets/svg/RightArrow";
-import Search from "../../../assets/svg/Search";
+import React from "react";
 
 export default function FournisseurTable({ columns, data, handleEdit, handleDelete , handleDisable }) {
 	return (
@@ -26,27 +25,41 @@ export default function FournisseurTable({ columns, data, handleEdit, handleDele
 							<td>{item.telephone}</td>
 							<td>
 								{/* edit button */}
-								<img
-									className="action-btn"
-									src="./images/icons/edit.png"
-									alt=""
-									onClick={() => handleEdit(item)}
-								/>
+								{
+									item.state == "ENABLED" && (
+										<React.Fragment>
+										<img
+											className="action-btn"
+											src="./images/icons/edit.png"
+											alt=""
+											onClick={() => handleEdit(item)}
+										/>
 
 								{/* delete button */}
-								<img
+
+
+									<img
 									className="action-btn"
 									src="./images/icons/trash-bin.png"
 									alt=""
 									onClick={() => handleDelete(item)}
-								/>
-								{/* disable button */}
-								<img
-									className="action-btn"
-									src="./images/icons/exit.png"
-									alt=""
-									onClick={() => handleDisable(item)}
-								/>
+							/>
+
+
+							{/* disable button */}
+							<img
+								className="action-btn"
+								src="./images/icons/exit.png"
+								alt=""
+								onClick={() => handleDisable(item)}
+							/>
+											</React.Fragment>
+									)
+								}
+								{item.state == "DISABLED" && (
+									<p> Fournisseur Désactivée </p>
+								)}
+
 							</td>
 						</tr>
 					))}
