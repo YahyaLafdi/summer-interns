@@ -2,6 +2,7 @@ package ensa.pfa.kitcoop.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,25 +44,13 @@ public class Pointage {
     @ManyToOne
     @JoinColumn(name = "PERSONNEL_ID", nullable = false)
     private Personnel personnel;
-//    @ManyToOne
-//    @JoinColumn(name = "unit_production_id")
-//    private UniteProd uniteProd;
     @ManyToOne
     @JoinColumn(name = "UNITE_PROD", nullable = false)
     private UniteProd uniteProd;
 
-    public Pointage(Long id, LocalDate dateDebut, LocalDate dateFin, Integer heuresNorm, Integer heuresSup25, Integer heuresSup50, Integer heuresSup100, Personnel personnel, UniteProd uniteProd){
-        this.id = id;
-        this.intituleUnitProd = intituleUnitProd;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.heuresSup100 = heuresSup100;
-        this.heuresSup50 = heuresSup50;
-        this.heuresSup25 = heuresSup25;
-        this.heuresNorm = heuresNorm;
-        this.personnel = personnel;
-        this.uniteProd = uniteProd;
-    }
+    @OneToOne(mappedBy = "pointage", orphanRemoval = true)
+    @JsonIgnore
+    private RegistrePaie registrePaie;
 
     @PrePersist
     @PreUpdate

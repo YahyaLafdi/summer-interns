@@ -9,6 +9,4 @@ import java.util.List;
 
 @Repository
 public interface RegistrePaieRepository extends JpaRepository<RegistrePaie, Long> {
-    @Query("SELECT R FROM RegistrePaie R WHERE R.pointage.id=?1")
-    public List<RegistrePaie> getRegistrePaieByPointageId(Long id);
 }
