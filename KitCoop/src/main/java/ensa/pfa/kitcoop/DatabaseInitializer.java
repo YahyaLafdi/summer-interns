@@ -35,7 +35,7 @@ public class DatabaseInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        User user1 = new User(1, "nirina", "151000", "ADMIN", true, "nirinamercia@gmail.com", null);
+        User user1 = new User(1, "nirina", "151000", "ADMIN", true,"", "nirinamercia@gmail.com", null);
         userService.createUser(user1);
         Personnel personnel1 = personnelRepository.save(new Personnel(1l, "2023001", false, "Lahmidi","Amina", "Supérieur","Feminin", "https://res.cloudinary.com/deqm1j9ey/image/upload/v1680881071/Kitcoop/default_pic_bdegda.png", LocalDate.parse("2002-05-05", formatter), LocalDate.parse("2023-05-12", formatter), "", 0, "dev front", "JK00650A", "178", "Tilila", "Agadir",LocalDate.parse("2002-07-18", formatter), "mensuelle", 70.0, true, "0631821328", "Célibataire", 0, LocalDate.parse("2022-04-15", formatter), "très actif et performant", new ArrayList<Enfant>()));
         Personnel personnel =personnelRepository.save(new Personnel(2l, "2023002",false, "Benali","Ahmed","Lycée", "Masculin","https://res.cloudinary.com/deqm1j9ey/image/upload/v1680881071/Kitcoop/default_pic_bdegda.png", LocalDate.parse("2003-01-12", formatter), LocalDate.parse("2023-01-20", formatter), "Démission", 3, "Secrétaire", "AHD4571A403", "176", "Hay Salam", "Agadir", LocalDate.parse("2019-02-15", formatter), "mensuelle", 50.0, true, "0684242312", "Célibataire",0, LocalDate.parse("2021-04-19", formatter), "", new ArrayList<Enfant>() ));

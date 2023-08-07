@@ -33,6 +33,9 @@ public class User {
     @Column(name = "PWD_CHANGED")
     private boolean pwdChanged;
 
+    @Column(name = "PICTURE")
+    private String picture;
+
     @Column(name = "EMAIL")
     private String email;
 

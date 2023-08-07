@@ -52,7 +52,7 @@ public class AuthService {
 
             ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user);
 
-            LoginResponse loginResponse = new LoginResponse(user.isPwdChanged(), jwtCookie.getValue(), user.getRole());
+            LoginResponse loginResponse = new LoginResponse(user.getId(), user.getUsername(), user.isPwdChanged(), jwtCookie.getValue(), user.getRole());
             return new APIResponse(HttpStatus.OK.value(), loginResponse,
                     "Connected Successfully.");
 

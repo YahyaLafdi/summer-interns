@@ -18,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @CrossOrigin(origins = "${REACT_APP_FRONTEND_URL}")
     @GetMapping("/api/utilisateurs")
     public ResponseEntity<APIResponse> getAllUsers() {

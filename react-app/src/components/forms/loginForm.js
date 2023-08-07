@@ -51,6 +51,9 @@ export default function LoginForm({ setVisible, language, setLogin, login }) {
 			setTimeout(() => {
 				dispatch({ type: "LOGIN", payload: data.data });
 				Cookies.set("user", JSON.stringify(data.data));
+				Cookies.set("userId", data.data.userId);
+				Cookies.set("username", data.data.username);
+
 				if (!data.data.passwordChanged) {
 					navigate("/reset");
 				} else {
