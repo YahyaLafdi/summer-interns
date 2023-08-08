@@ -25,8 +25,13 @@ public class RegistrePaieService {
     }
     public  APIResponse deleteRegistreById(Long id){
         try{
-            registrePaieRepository.deleteById(id);
-            return new APIResponse(HttpStatus.NO_CONTENT.value(), null, "Suppression réussie");
+            RegistrePaie reg = registrePaieRepository.findById(id).orElse(null);
+            if(reg!=null) {
+                registrePaieRepository.delete(reg);
+                return new APIResponse(HttpStatus.ACCEPTED.value(), null, "Suppression réussie");
+            }else {
+                return new APIResponse(HttpStatus.NO_CONTENT.value(), null, "Registre de paie non trouvé");
+            }
         }catch (Exception e){
             throw new InternalErrorException("Quelque chose s'est mal passé. Réessayer  plus tard...");
         }

@@ -1,11 +1,13 @@
 package ensa.pfa.kitcoop;
 
 import ensa.pfa.kitcoop.models.*;
+import ensa.pfa.kitcoop.payload.requests.AddPointageRequest;
 import ensa.pfa.kitcoop.repositories.EnfantRepository;
 import ensa.pfa.kitcoop.repositories.PersonnelRepository;
 import ensa.pfa.kitcoop.repositories.PointageRepository;
 import ensa.pfa.kitcoop.repositories.RegistrePaieRepository;
 import ensa.pfa.kitcoop.services.PersonnelService;
+import ensa.pfa.kitcoop.services.PointageService;
 import ensa.pfa.kitcoop.services.UniteProdService;
 import ensa.pfa.kitcoop.services.UserService;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,7 @@ public class DatabaseInitializer implements ApplicationRunner {
     private final UserService userService;
     private final PersonnelRepository personnelRepository;
     private final UniteProdService uniteProdService;
-    private final PointageRepository pointageRepository;
+    private final PointageService pointageService;
     private final RegistrePaieRepository registrePaieRepository;
     private final EnfantRepository enfantRepository;
     @Override
@@ -47,9 +49,10 @@ public class DatabaseInitializer implements ApplicationRunner {
         UniteProd uniteProd1 = new UniteProd(2l, "unite_prod_2", "Sidi Youssef", "Agadir");
         uniteProdService.createUniteProd(uniteProd1);
         UniteProd uniteProd2 = new UniteProd(3l, "unite_prod_3", "Dakhla", "Agadir");
-        Pointage pointage = new Pointage(1l, LocalDate.parse("2023-05-12"), LocalDate.parse("2023-06-10", formatter), 136,17,8,1,personnel1,uniteProd);
-        pointageRepository.save(pointage);
-
-        RegistrePaie r = registrePaieRepository.save(new RegistrePaie(pointage));
+//        Pointage pointage = new Pointage(1l, LocalDate.parse("2023-05-12"), LocalDate.parse("2023-06-10", formatter), 136,17,8,1,personnel1,uniteProd);
+//        pointageRepository.save(pointage);
+        AddPointageRequest pointageRequest = new AddPointageRequest(1l, "2023002", LocalDate.parse("2023-05-12"), LocalDate.parse("2023-06-10", formatter), 136,17,8,1);
+        pointageService.insertPointage(pointageRequest);
+        //RegistrePaie r = registrePaieRepository.save(new RegistrePaie(pointage));
     }
 }
